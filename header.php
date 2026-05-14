@@ -316,7 +316,8 @@
 							КАТАЛОГ
 						</a>
 					</li>
-					<li>
+
+					<li class="main-menu__item main-menu__item--has-dropdown">
 						<a href="<?php echo esc_url(get_term_link('dlya-doma', 'product_cat')); ?>">
 							<div class="ico">
 								<svg
@@ -342,6 +343,10 @@
 							</div>
 							ДЛЯ ДОМА
 						</a>
+
+						<div class="main-menu__dropdown">
+							<?php talkorus_product_subcategories_dropdown('dlya-doma'); ?>
+						</div>
 					</li>
 					<li>
 						<a href="<?php echo esc_url(get_term_link('dlya-bani', 'product_cat')); ?>">
@@ -380,6 +385,9 @@
 							</div>
 							ДЛЯ БАНИ
 						</a>
+						<div class="main-menu__dropdown">
+							<?php talkorus_product_subcategories_dropdown('dlya-bani'); ?>
+						</div>
 					</li>
 					<li>
 						<a href="<?php echo esc_url(get_term_link('plitka-i-kamni', 'product_cat')); ?>">
@@ -428,6 +436,9 @@
 							</div>
 							ПЛИТКА И КАМНИ
 						</a>
+						<div class="main-menu__dropdown">
+							<?php talkorus_product_subcategories_dropdown('plitka-i-kamni'); ?>
+						</div>
 					</li>
 					<li>
 						<a href="#">
@@ -515,7 +526,7 @@
 								<i class="fa fa-search"></i>
 							</button>
 						</form>
-						
+
 					</div>
 					<div class="call-back">
 						<div class="icon">
@@ -603,7 +614,7 @@
 								<i class="fa fa-search"></i>
 							</button>
 						</form>
-						
+
 					</div>
 					<div class="call-back">
 						<div class="icon no-desctop">
@@ -974,8 +985,9 @@
 							КАТАЛОГ
 						</a>
 					</li>
-					<li>
+					<li class="main-menu__item main-menu__item--has-dropdown">
 						<a href="<?php echo esc_url(get_term_link('dlya-doma', 'product_cat')); ?>">
+
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="31"
@@ -996,10 +1008,16 @@
 									</clipPath>
 								</defs>
 							</svg>
+
 							ДЛЯ ДОМА
 						</a>
+
+						<div class="main-menu__dropdown">
+							<?php talkorus_product_subcategories_dropdown('dlya-doma'); ?>
+						</div>
 					</li>
-					<li>
+
+					<li class="main-menu__item main-menu__item--has-dropdown">
 						<a href="<?php echo esc_url(get_term_link('dlya-bani', 'product_cat')); ?>">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -1034,8 +1052,13 @@
 							</svg>
 							ДЛЯ БАНИ
 						</a>
+
+						<div class="main-menu__dropdown">
+							<?php talkorus_product_subcategories_dropdown('dlya-bani'); ?>
+						</div>
 					</li>
-					<li>
+
+					<li class="main-menu__item main-menu__item--has-dropdown">
 						<a href="<?php echo esc_url(get_term_link('plitka-i-kamni', 'product_cat')); ?>">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -1080,6 +1103,10 @@
 							</svg>
 							ПЛИТКА И КАМНИ
 						</a>
+
+						<div class="main-menu__dropdown">
+							<?php talkorus_product_subcategories_dropdown('plitka-i-kamni'); ?>
+						</div>
 					</li>
 					<li>
 						<a href="#">

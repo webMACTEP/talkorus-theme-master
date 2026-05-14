@@ -326,3 +326,84 @@ function talkorus_price_on_request($price)
 {
 	return '<span class="price-on-request">Цена по запросу</span>';
 }
+
+function talkorus_product_subcategories_dropdown($parent_slug)
+{
+	if (empty($parent_slug)) {
+		return;
+	}
+
+	$parent_term = get_term_by('slug', $parent_slug, 'product_cat');
+
+	if (!$parent_term || is_wp_error($parent_term)) {
+		return;
+	}
+
+	$subcategories = get_terms(array(
+		'taxonomy'   => 'product_cat',
+		'parent'     => $parent_term->term_id,
+		'hide_empty' => false,
+		'orderby'    => 'menu_order',
+		'order'      => 'ASC',
+	));
+
+	if (empty($subcategories) || is_wp_error($subcategories)) {
+		return;
+	}
+
+	echo '<ul class="main-menu-subcategories">';
+
+	foreach ($subcategories as $subcategory) {
+		$subcategory_link = get_term_link($subcategory);
+
+		if (is_wp_error($subcategory_link)) {
+			continue;
+		}
+
+		echo '<li class="main-menu-subcategories__item">';
+		echo '<a class="main-menu-subcategories__link" href="' . esc_url($subcategory_link) . '">';
+		echo esc_html($subcategory->name);
+		echo '</a>';
+		echo '</li>';
+	}
+
+	echo '</ul>';
+}
+
+//корзина
+
+add_filter('woocommerce_add_to_cart_fragments', 'talkorus_update_floating_cart_fragment');
+
+function talkorus_update_floating_cart_fragment($fragments)
+{
+    if (!function_exists('WC') || !WC()->cart) {
+        return $fragments;
+    }
+
+    $cart_count = WC()->cart->get_cart_contents_count();
+
+    ob_start();
+    ?>
+    <a
+        href="<?php echo esc_url(wc_get_cart_url()); ?>"
+        class="floating-cart <?php echo $cart_count > 0 ? 'is-visible' : ''; ?>"
+        aria-label="Перейти в корзину"
+    >
+        <span class="floating-cart__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M7.2 19.2C6.5373 19.2 6 19.7373 6 20.4C6 21.0627 6.5373 21.6 7.2 21.6C7.8627 21.6 8.4 21.0627 8.4 20.4C8.4 19.7373 7.8627 19.2 7.2 19.2Z" fill="currentColor"/>
+                <path d="M18 19.2C17.3373 19.2 16.8 19.7373 16.8 20.4C16.8 21.0627 17.3373 21.6 18 21.6C18.6627 21.6 19.2 21.0627 19.2 20.4C19.2 19.7373 18.6627 19.2 18 19.2Z" fill="currentColor"/>
+                <path d="M3 3.6H5.082L6.81 15.192C6.9348 16.0308 7.6554 16.65 8.5032 16.65H18.2556C19.0614 16.65 19.7586 16.0872 19.929 15.3L21.186 9.492C21.399 8.508 20.649 7.575 19.6422 7.575H7.302L6.915 4.977C6.795 4.1706 6.1026 3.6 5.2872 3.6H3C2.6688 3.6 2.4 3.8688 2.4 4.2C2.4 4.5312 2.6688 4.8 3 4.8ZM7.482 8.775H19.6422C19.884 8.775 20.064 8.9994 20.0124 9.2358L18.7554 15.0438C18.7044 15.2796 18.4956 15.45 18.2556 15.45H8.5032C8.2506 15.45 8.0358 15.2652 7.9992 15.0156L7.482 8.775Z" fill="currentColor"/>
+            </svg>
+        </span>
+
+        <span class="floating-cart__count">
+            <?php echo esc_html($cart_count); ?>
+        </span>
+    </a>
+    <?php
+
+    $fragments['a.floating-cart'] = ob_get_clean();
+
+    return $fragments;
+}
