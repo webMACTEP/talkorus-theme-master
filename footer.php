@@ -202,7 +202,7 @@ wp_footer(); ?>
         </div>
     </div>
 </footer>
-<?php if (function_exists('WC')) : ?>
+<?php if (function_exists('WC') && ! is_cart()) : ?>
     <?php
     $cart_count = WC()->cart ? WC()->cart->get_cart_contents_count() : 0;
     ?>

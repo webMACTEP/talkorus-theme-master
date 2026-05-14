@@ -339,16 +339,19 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 })();
 
+document.addEventListener("DOMContentLoaded", function () {
+  const filtersButton = document.querySelector(".filters");
+  const catalogSidebar = document.querySelector(
+    ".catalog-page .catalog-sidebar",
+  );
 
-document.addEventListener('DOMContentLoaded', function () {
-    const filtersButton = document.querySelector('.filters');
-    const catalogSidebar = document.querySelector('.catalog-page .catalog-sidebar');
+  if (!filtersButton || !catalogSidebar) {
+    return;
+  }
 
-    if (!filtersButton || !catalogSidebar) {
-        return;
-    }
-
-    filtersButton.addEventListener('click', function () {
-        catalogSidebar.classList.toggle('active');
-    });
+  filtersButton.addEventListener("click", function () {
+    catalogSidebar.classList.toggle("active");
+  });
 });
+
+

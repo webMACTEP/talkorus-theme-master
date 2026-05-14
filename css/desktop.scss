@@ -1,5 +1,8 @@
 /* desktop */
 @media (min-width: 1440px) {
+    #wpadminbar{
+        display: none;
+    }
     body {
         color: #54595f;
         font-family: "PT Sans", sans-serif;

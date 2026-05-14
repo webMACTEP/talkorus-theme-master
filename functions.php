@@ -376,7 +376,7 @@ add_filter('woocommerce_add_to_cart_fragments', 'talkorus_update_floating_cart_f
 
 function talkorus_update_floating_cart_fragment($fragments)
 {
-    if (!function_exists('WC') || !WC()->cart) {
+    if (is_cart() || ! function_exists('WC') || ! WC()->cart) {
         return $fragments;
     }
 
