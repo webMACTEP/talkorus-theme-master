@@ -3308,4 +3308,101 @@
   .checkout-page .woocommerce-validated select {
     border-color: #b1b1b1 !important;
   }
+  .cart-custom-item__config, .cart-custom-item__meta {
+    width: 100%;
+  }
+  .cart-custom-item__config-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto 220px;
+    -moz-column-gap: 28px;
+         column-gap: 28px;
+    align-items: center;
+    width: 100%;
+    min-height: 46px;
+    color: #54595f;
+    font-family: "PT Sans", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+  }
+  .cart-custom-item__config-row::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-bottom: 1px dashed #b1b1b1;
+  }
+  .cart-custom-item__config-row:last-child::after {
+    display: none;
+  }
+  .cart-custom-item__config-name {
+    white-space: nowrap;
+  }
+  .cart-custom-item__config-line {
+    display: none;
+  }
+  .cart-custom-item__config-value {
+    position: relative;
+    z-index: 2;
+    white-space: nowrap;
+    text-align: right;
+  }
+  .cart-custom-item__config-control {
+    position: relative;
+    z-index: 2;
+    justify-self: end;
+    width: 220px;
+  }
+  .cart-variation-editor {
+    width: 100%;
+  }
+  .cart-variation-editor__select {
+    width: 100%;
+    min-height: 34px;
+    padding: 5px 34px 5px 12px;
+    border: 1px solid #d0d0d0;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #54595f;
+    font-family: "PT Sans", sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    outline: none;
+    cursor: pointer;
+  }
+  .cart-variation-editor__select:focus {
+    border-color: #a9613d;
+  }
+  .cart-variation-editor__select:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+  .cart-custom-item__config-row {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) 220px !important;
+    -moz-column-gap: 28px !important;
+         column-gap: 28px !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-height: 46px !important;
+  }
+  .cart-custom-item__config-name {
+    white-space: nowrap;
+  }
+  .cart-custom-item__config-line {
+    display: block !important;
+    height: 1px;
+    border-bottom: 0px dashed #b1b1b1;
+  }
+  .cart-custom-item__config-value {
+    display: none !important;
+  }
+  .cart-custom-item__config-control {
+    width: 220px !important;
+    justify-self: end !important;
+  }
+  .cart-variation-editor__select {
+    width: 100% !important;
+  }
 }/*# sourceMappingURL=desktop.css.map */

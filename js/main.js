@@ -433,3 +433,97 @@ jQuery(function ($) {
 
   initCustomCartQuantity();
 });
+
+jQuery(function ($) {
+  function getCartItemAttributes($item) {
+    const attributes = {};
+
+    $item.find(".cart-variation-editor__select").each(function () {
+      const $select = $(this);
+      const attributeName = $select.data("attribute-name");
+      const value = $select.val();
+
+      if (attributeName && value) {
+        attributes[attributeName] = value;
+      }
+    });
+
+    return attributes;
+  }
+
+  function updateCartVariation($item) {
+    const cartItemKey = $item.data("cart-item-key");
+    const productId = $item.data("product-id");
+    const attributes = getCartItemAttributes($item);
+
+    if (!cartItemKey || !productId || !Object.keys(attributes).length) {
+      return;
+    }
+
+    $item.addClass("cart-custom-item--loading");
+    $item.find(".cart-variation-editor__select").prop("disabled", true);
+
+    $.ajax({
+      url: talkorusCartVariation.ajaxUrl,
+      type: "POST",
+      dataType: "json",
+      data: {
+        action: "talkorus_update_cart_item_variation",
+        nonce: talkorusCartVariation.nonce,
+        cart_item_key: cartItemKey,
+        product_id: productId,
+        attributes: attributes,
+      },
+      success: function (response) {
+        if (!response || !response.success) {
+          const message =
+            response && response.data && response.data.message
+              ? response.data.message
+              : "Не удалось обновить вариацию.";
+
+          alert(message);
+          window.location.reload();
+          return;
+        }
+
+        if (response.data.needs_reload) {
+          window.location.reload();
+          return;
+        }
+
+        $item.attr("data-cart-item-key", response.data.new_cart_item_key);
+        $item.data("cart-item-key", response.data.new_cart_item_key);
+
+        $item.find(".cart-custom-item__price").html(response.data.price_html);
+        $item
+          .find(".cart-custom-item__subtotal")
+          .html(response.data.subtotal_html);
+
+        $item
+          .find(".cart-custom-item__remove-link")
+          .attr("href", response.data.remove_url);
+
+        $(".cart-custom-summary__total strong").html(
+          response.data.cart_total_html,
+        );
+        $(".cart-custom-summary__count").text(response.data.cart_count_text);
+
+        $(document.body).trigger("wc_fragment_refresh");
+      },
+      error: function () {
+        alert("Ошибка обновления вариации.");
+        window.location.reload();
+      },
+      complete: function () {
+        $item.removeClass("cart-custom-item--loading");
+        $item.find(".cart-variation-editor__select").prop("disabled", false);
+      },
+    });
+  }
+
+  $(document).on("change", ".cart-variation-editor__select", function () {
+    const $item = $(this).closest(".cart-custom-item");
+
+    updateCartVariation($item);
+  });
+});

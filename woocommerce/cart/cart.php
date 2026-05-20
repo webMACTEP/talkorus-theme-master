@@ -43,7 +43,10 @@ do_action('woocommerce_before_cart');
 				$item_data_html    = wc_get_formatted_cart_item_data($cart_item);
 				?>
 
-				<div class="cart-custom-item <?php echo esc_attr(apply_filters('woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key)); ?>">
+				<div
+					class="cart-custom-item <?php echo esc_attr(apply_filters('woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key)); ?>"
+					data-cart-item-key="<?php echo esc_attr($cart_item_key); ?>"
+					data-product-id="<?php echo esc_attr($cart_item['product_id']); ?>">
 
 					<div class="cart-custom-item__image">
 						<?php if ($product_permalink) : ?>
@@ -143,56 +146,94 @@ do_action('woocommerce_before_cart');
 
 						</div>
 
-						<?php if ($item_data_html) : ?>
+						<?php
+						$parent_product = wc_get_product($cart_item['product_id']);
+						$is_variable_cart_item = $parent_product && $parent_product->is_type('variable');
+						?>
+
+						<?php if ($is_variable_cart_item || $item_data_html) : ?>
 							<div class="cart-custom-item__config">
 								<div class="cart-custom-item__config-title">
 									Конфигурация
 								</div>
 
 								<div class="cart-custom-item__meta">
-									<?php
-									$cart_item_data = wc_get_formatted_cart_item_data($cart_item, true);
 
-									if (!empty($cart_item['variation'])) :
-										foreach ($cart_item['variation'] as $attribute_key => $attribute_value) :
-											if (empty($attribute_value)) {
-												continue;
-											}
+									<?php if ($is_variable_cart_item) : ?>
 
-											$taxonomy = str_replace('attribute_', '', $attribute_key);
-											$label = wc_attribute_label($taxonomy);
+										<div class="cart-variation-editor">
+											<?php
+											$variation_attributes = $parent_product->get_variation_attributes();
+											$current_variation    = isset($cart_item['variation']) ? $cart_item['variation'] : array();
 
-											if (taxonomy_exists($taxonomy)) {
-												$term = get_term_by('slug', $attribute_value, $taxonomy);
-												$value = $term && !is_wp_error($term) ? $term->name : $attribute_value;
-											} else {
-												$value = $attribute_value;
-											}
-									?>
+											foreach ($variation_attributes as $attribute_name => $options) :
+												$select_name = 'attribute_' . sanitize_title($attribute_name);
+												$current_value = isset($current_variation[$select_name]) ? $current_variation[$select_name] : '';
 
-											<div class="cart-custom-item__config-row">
-												<div class="cart-custom-item__config-name">
-													<?php echo esc_html($label); ?>:
+												$label = wc_attribute_label($attribute_name);
+											?>
+
+												<?php
+												$current_value_label = $current_value;
+
+												if (taxonomy_exists($attribute_name) && ! empty($current_value)) {
+													$current_term = get_term_by('slug', $current_value, $attribute_name);
+
+													if ($current_term && ! is_wp_error($current_term)) {
+														$current_value_label = $current_term->name;
+													}
+												}
+												?>
+
+												<div class="cart-custom-item__config-row">
+													<div class="cart-custom-item__config-name">
+														<?php echo esc_html($label); ?>:
+													</div>
+
+													<div class="cart-custom-item__config-line"></div>
+
+													<div class="cart-custom-item__config-value">
+														<?php echo esc_html($current_value_label); ?>
+													</div>
+
+													<div class="cart-custom-item__config-control">
+														<select
+															class="cart-variation-editor__select"
+															name="<?php echo esc_attr($select_name); ?>"
+															data-attribute-name="<?php echo esc_attr($select_name); ?>">
+															<?php foreach ($options as $option) : ?>
+																<?php
+																$option_label = $option;
+
+																if (taxonomy_exists($attribute_name)) {
+																	$term = get_term_by('slug', $option, $attribute_name);
+
+																	if ($term && ! is_wp_error($term)) {
+																		$option_label = $term->name;
+																	}
+																}
+																?>
+
+																<option
+																	value="<?php echo esc_attr($option); ?>"
+																	<?php selected($current_value, $option); ?>>
+																	<?php echo esc_html($option_label); ?>
+																</option>
+															<?php endforeach; ?>
+														</select>
+													</div>
 												</div>
 
-												<div class="cart-custom-item__config-line"></div>
+											<?php endforeach; ?>
+										</div>
 
-												<div class="cart-custom-item__config-value">
-													<?php echo esc_html($value); ?>
-												</div>
-
-												<?php if ($product_permalink) : ?>
-													<a class="cart-custom-item__config-edit" href="<?php echo esc_url($product_permalink); ?>">
-														Редактировать
-													</a>
-												<?php endif; ?>
-											</div>
-
-										<?php endforeach; ?>
 									<?php else : ?>
+
 										<?php echo $item_data_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
 										?>
+
 									<?php endif; ?>
+
 								</div>
 							</div>
 						<?php endif; ?>

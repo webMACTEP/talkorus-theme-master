@@ -80,7 +80,22 @@ function sp_scripts()
 
 	wp_enqueue_script('jquery');
 	wp_enqueue_script('swiper', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array(), '11.0.0', true);
-	wp_enqueue_script('script', get_template_directory_uri() . '/js/main.js', array('jquery', 'swiper'), null, true);
+	wp_enqueue_script(
+		'script',
+		get_template_directory_uri() . '/js/main.js',
+		array('jquery', 'swiper'),
+		null,
+		true
+	);
+
+	wp_localize_script(
+		'script',
+		'talkorusCartVariation',
+		array(
+			'ajaxUrl' => admin_url('admin-ajax.php'),
+			'nonce'   => wp_create_nonce('talkorus_cart_variation_nonce'),
+		)
+	);
 
 	if (is_singular() && comments_open() && get_option('thread_comments')) {
 		wp_enqueue_script('comment-reply');
@@ -468,4 +483,157 @@ add_filter('woocommerce_order_button_text', 'talkorus_checkout_button_text');
 function talkorus_checkout_button_text()
 {
 	return 'Оформить заказ';
+}
+
+add_action('wp_ajax_talkorus_update_cart_item_variation', 'talkorus_update_cart_item_variation');
+add_action('wp_ajax_nopriv_talkorus_update_cart_item_variation', 'talkorus_update_cart_item_variation');
+
+function talkorus_update_cart_item_variation()
+{
+	check_ajax_referer('talkorus_cart_variation_nonce', 'nonce');
+
+	if (! function_exists('WC') || ! WC()->cart) {
+		wp_send_json_error(array(
+			'message' => 'Корзина недоступна.',
+		));
+	}
+
+	$cart_item_key = isset($_POST['cart_item_key']) ? sanitize_text_field(wp_unslash($_POST['cart_item_key'])) : '';
+	$product_id    = isset($_POST['product_id']) ? absint($_POST['product_id']) : 0;
+	$attributes    = isset($_POST['attributes']) && is_array($_POST['attributes']) ? wp_unslash($_POST['attributes']) : array();
+
+	if (! $cart_item_key || ! $product_id || empty($attributes)) {
+		wp_send_json_error(array(
+			'message' => 'Недостаточно данных.',
+		));
+	}
+
+	$cart = WC()->cart->get_cart();
+
+	if (empty($cart[$cart_item_key])) {
+		wp_send_json_error(array(
+			'message' => 'Товар не найден в корзине.',
+		));
+	}
+
+	$old_cart_item = $cart[$cart_item_key];
+	$quantity      = isset($old_cart_item['quantity']) ? absint($old_cart_item['quantity']) : 1;
+
+	$product = wc_get_product($product_id);
+
+	if (! $product || ! $product->is_type('variable')) {
+		wp_send_json_error(array(
+			'message' => 'Это не вариативный товар.',
+		));
+	}
+
+	$clean_attributes = array();
+
+	foreach ($attributes as $key => $value) {
+		$key   = sanitize_title($key);
+		$value = sanitize_text_field($value);
+
+		if ($key && $value) {
+			$clean_attributes[$key] = $value;
+		}
+	}
+
+	if (empty($clean_attributes)) {
+		wp_send_json_error(array(
+			'message' => 'Не выбраны атрибуты.',
+		));
+	}
+
+	$data_store   = WC_Data_Store::load('product');
+	$variation_id = $data_store->find_matching_product_variation($product, $clean_attributes);
+
+	if (! $variation_id) {
+		wp_send_json_error(array(
+			'message' => 'Такой вариации нет.',
+		));
+	}
+
+	$existing_target_key = '';
+
+	foreach (WC()->cart->get_cart() as $key => $item) {
+		if ($key === $cart_item_key) {
+			continue;
+		}
+
+		if (
+			absint($item['product_id']) === $product_id
+			&& absint($item['variation_id']) === absint($variation_id)
+		) {
+			$existing_target_key = $key;
+			break;
+		}
+	}
+
+	$cart_item_data = $old_cart_item;
+
+	unset(
+		$cart_item_data['key'],
+		$cart_item_data['product_id'],
+		$cart_item_data['variation_id'],
+		$cart_item_data['variation'],
+		$cart_item_data['quantity'],
+		$cart_item_data['data'],
+		$cart_item_data['line_tax_data'],
+		$cart_item_data['line_subtotal'],
+		$cart_item_data['line_subtotal_tax'],
+		$cart_item_data['line_total'],
+		$cart_item_data['line_tax']
+	);
+
+	WC()->cart->remove_cart_item($cart_item_key);
+
+	$new_cart_item_key = WC()->cart->add_to_cart(
+		$product_id,
+		$quantity,
+		$variation_id,
+		$clean_attributes,
+		$cart_item_data
+	);
+
+	if (! $new_cart_item_key) {
+		wp_send_json_error(array(
+			'message' => 'Не удалось обновить вариацию.',
+		));
+	}
+
+	WC()->cart->calculate_totals();
+	WC()->cart->set_session();
+
+	$new_cart_item = WC()->cart->get_cart_item($new_cart_item_key);
+
+	if (! $new_cart_item) {
+		wp_send_json_success(array(
+			'needs_reload' => true,
+		));
+	}
+
+	$new_product = $new_cart_item['data'];
+
+	$cart_count = WC()->cart->get_cart_contents_count();
+
+	if ($cart_count % 10 === 1 && $cart_count % 100 !== 11) {
+		$count_word = 'товар';
+	} elseif (
+		in_array($cart_count % 10, array(2, 3, 4), true)
+		&& ! in_array($cart_count % 100, array(12, 13, 14), true)
+	) {
+		$count_word = 'товара';
+	} else {
+		$count_word = 'товаров';
+	}
+
+	wp_send_json_success(array(
+		'needs_reload'       => ! empty($existing_target_key),
+		'new_cart_item_key'  => $new_cart_item_key,
+		'price_html'         => WC()->cart->get_product_price($new_product),
+		'subtotal_html'      => WC()->cart->get_product_subtotal($new_product, $new_cart_item['quantity']),
+		'cart_total_html'    => WC()->cart->get_cart_total(),
+		'cart_count_text'    => $cart_count . ' ' . $count_word,
+		'remove_url'         => wc_get_cart_remove_url($new_cart_item_key),
+	));
 }
