@@ -179,7 +179,7 @@ function talkorus_recently_viewed_products($limit = 5)
 		wp_reset_postdata();
 		return;
 	}
-	?>
+?>
 
 	<section class="recently-viewed">
 		<div class="container">
@@ -219,13 +219,14 @@ function talkorus_recently_viewed_products($limit = 5)
 		</div>
 	</section>
 
-	<?php
+<?php
 	wp_reset_postdata();
 }
 
 add_filter('woocommerce_product_add_to_cart_text', 'talkorus_change_add_to_cart_text', 10, 2);
 
-function talkorus_change_add_to_cart_text($text, $product) {
+function talkorus_change_add_to_cart_text($text, $product)
+{
 	return 'Заказать';
 }
 
@@ -376,34 +377,95 @@ add_filter('woocommerce_add_to_cart_fragments', 'talkorus_update_floating_cart_f
 
 function talkorus_update_floating_cart_fragment($fragments)
 {
-    if (is_cart() || ! function_exists('WC') || ! WC()->cart) {
-        return $fragments;
-    }
+	if (is_cart() || ! function_exists('WC') || ! WC()->cart) {
+		return $fragments;
+	}
 
-    $cart_count = WC()->cart->get_cart_contents_count();
+	$cart_count = WC()->cart->get_cart_contents_count();
 
-    ob_start();
-    ?>
-    <a
-        href="<?php echo esc_url(wc_get_cart_url()); ?>"
-        class="floating-cart <?php echo $cart_count > 0 ? 'is-visible' : ''; ?>"
-        aria-label="Перейти в корзину"
-    >
-        <span class="floating-cart__icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M7.2 19.2C6.5373 19.2 6 19.7373 6 20.4C6 21.0627 6.5373 21.6 7.2 21.6C7.8627 21.6 8.4 21.0627 8.4 20.4C8.4 19.7373 7.8627 19.2 7.2 19.2Z" fill="currentColor"/>
-                <path d="M18 19.2C17.3373 19.2 16.8 19.7373 16.8 20.4C16.8 21.0627 17.3373 21.6 18 21.6C18.6627 21.6 19.2 21.0627 19.2 20.4C19.2 19.7373 18.6627 19.2 18 19.2Z" fill="currentColor"/>
-                <path d="M3 3.6H5.082L6.81 15.192C6.9348 16.0308 7.6554 16.65 8.5032 16.65H18.2556C19.0614 16.65 19.7586 16.0872 19.929 15.3L21.186 9.492C21.399 8.508 20.649 7.575 19.6422 7.575H7.302L6.915 4.977C6.795 4.1706 6.1026 3.6 5.2872 3.6H3C2.6688 3.6 2.4 3.8688 2.4 4.2C2.4 4.5312 2.6688 4.8 3 4.8ZM7.482 8.775H19.6422C19.884 8.775 20.064 8.9994 20.0124 9.2358L18.7554 15.0438C18.7044 15.2796 18.4956 15.45 18.2556 15.45H8.5032C8.2506 15.45 8.0358 15.2652 7.9992 15.0156L7.482 8.775Z" fill="currentColor"/>
-            </svg>
-        </span>
+	ob_start();
+?>
+	<a
+		href="<?php echo esc_url(wc_get_cart_url()); ?>"
+		class="floating-cart <?php echo $cart_count > 0 ? 'is-visible' : ''; ?>"
+		aria-label="Перейти в корзину">
+		<span class="floating-cart__icon">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+				<path d="M7.2 19.2C6.5373 19.2 6 19.7373 6 20.4C6 21.0627 6.5373 21.6 7.2 21.6C7.8627 21.6 8.4 21.0627 8.4 20.4C8.4 19.7373 7.8627 19.2 7.2 19.2Z" fill="currentColor" />
+				<path d="M18 19.2C17.3373 19.2 16.8 19.7373 16.8 20.4C16.8 21.0627 17.3373 21.6 18 21.6C18.6627 21.6 19.2 21.0627 19.2 20.4C19.2 19.7373 18.6627 19.2 18 19.2Z" fill="currentColor" />
+				<path d="M3 3.6H5.082L6.81 15.192C6.9348 16.0308 7.6554 16.65 8.5032 16.65H18.2556C19.0614 16.65 19.7586 16.0872 19.929 15.3L21.186 9.492C21.399 8.508 20.649 7.575 19.6422 7.575H7.302L6.915 4.977C6.795 4.1706 6.1026 3.6 5.2872 3.6H3C2.6688 3.6 2.4 3.8688 2.4 4.2C2.4 4.5312 2.6688 4.8 3 4.8ZM7.482 8.775H19.6422C19.884 8.775 20.064 8.9994 20.0124 9.2358L18.7554 15.0438C18.7044 15.2796 18.4956 15.45 18.2556 15.45H8.5032C8.2506 15.45 8.0358 15.2652 7.9992 15.0156L7.482 8.775Z" fill="currentColor" />
+			</svg>
+		</span>
 
-        <span class="floating-cart__count">
-            <?php echo esc_html($cart_count); ?>
-        </span>
-    </a>
-    <?php
+		<span class="floating-cart__count">
+			<?php echo esc_html($cart_count); ?>
+		</span>
+	</a>
+<?php
 
-    $fragments['a.floating-cart'] = ob_get_clean();
+	$fragments['a.floating-cart'] = ob_get_clean();
 
-    return $fragments;
+	return $fragments;
+}
+
+add_filter('woocommerce_coupons_enabled', 'talkorus_disable_coupons_on_checkout');
+
+function talkorus_disable_coupons_on_checkout($enabled)
+{
+	if (is_checkout()) {
+		return false;
+	}
+
+	return $enabled;
+}
+add_filter('woocommerce_checkout_fields', 'talkorus_checkout_fields');
+
+function talkorus_checkout_fields($fields)
+{
+	unset($fields['billing']['billing_company']);
+	unset($fields['billing']['billing_country']);
+	unset($fields['billing']['billing_state']);
+	unset($fields['billing']['billing_city']);
+	unset($fields['billing']['billing_postcode']);
+	unset($fields['billing']['billing_address_2']);
+	unset($fields['billing']['billing_last_name']);
+
+	$fields['billing']['billing_first_name']['label'] = '';
+	$fields['billing']['billing_first_name']['placeholder'] = 'ФИО';
+	$fields['billing']['billing_first_name']['class'] = array('form-row-first', 'checkout-field-name');
+	$fields['billing']['billing_first_name']['priority'] = 10;
+	$fields['billing']['billing_first_name']['required'] = true;
+
+	$fields['billing']['billing_phone']['label'] = '';
+	$fields['billing']['billing_phone']['placeholder'] = 'Номер телефона';
+	$fields['billing']['billing_phone']['class'] = array('form-row-middle', 'checkout-field-phone');
+	$fields['billing']['billing_phone']['priority'] = 20;
+	$fields['billing']['billing_phone']['required'] = true;
+
+	$fields['billing']['billing_email']['label'] = '';
+	$fields['billing']['billing_email']['placeholder'] = 'E-mail';
+	$fields['billing']['billing_email']['class'] = array('form-row-last', 'checkout-field-email');
+	$fields['billing']['billing_email']['priority'] = 30;
+	$fields['billing']['billing_email']['required'] = true;
+
+	$fields['billing']['billing_address_1']['label'] = '';
+	$fields['billing']['billing_address_1']['placeholder'] = 'Ваш адрес';
+	$fields['billing']['billing_address_1']['class'] = array('form-row-wide', 'checkout-field-address');
+	$fields['billing']['billing_address_1']['priority'] = 40;
+	$fields['billing']['billing_address_1']['required'] = true;
+
+	if (isset($fields['order']['order_comments'])) {
+		$fields['order']['order_comments']['label'] = 'Комментарий к заказу';
+		$fields['order']['order_comments']['placeholder'] = 'Комментарий ( по желанию )';
+		$fields['order']['order_comments']['class'] = array('form-row-wide', 'checkout-field-comment');
+	}
+
+	return $fields;
+}
+
+add_filter('woocommerce_order_button_text', 'talkorus_checkout_button_text');
+
+function talkorus_checkout_button_text()
+{
+	return 'Оформить заказ';
 }

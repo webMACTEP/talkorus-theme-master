@@ -354,4 +354,82 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+jQuery(function ($) {
+  function initCustomCartQuantity() {
+    $(".cart-custom-item__quantity .quantity").each(function () {
+      const $quantity = $(this);
 
+      if ($quantity.hasClass("cart-qty-initialized")) {
+        return;
+      }
+
+      $quantity.addClass("cart-qty-initialized");
+
+      $quantity.prepend(
+        '<button type="button" class="cart-qty-button cart-qty-button--minus">-</button>',
+      );
+      $quantity.append(
+        '<button type="button" class="cart-qty-button cart-qty-button--plus">+</button>',
+      );
+    });
+  }
+
+  function triggerCartUpdate() {
+    const $updateButton = $('button[name="update_cart"]');
+
+    $updateButton.prop("disabled", false);
+
+    clearTimeout(window.talkorusCartUpdateTimer);
+
+    window.talkorusCartUpdateTimer = setTimeout(function () {
+      $updateButton.trigger("click");
+    }, 500);
+  }
+
+  $(document).on(
+    "click",
+    ".cart-qty-button--minus, .cart-qty-button--plus",
+    function () {
+      const $button = $(this);
+      const $quantity = $button.closest(".quantity");
+      const $input = $quantity.find("input.qty");
+
+      const currentValue = parseFloat($input.val()) || 0;
+      const min = parseFloat($input.attr("min")) || 0;
+      const max = parseFloat($input.attr("max")) || 999999;
+      const step = parseFloat($input.attr("step")) || 1;
+
+      let newValue = currentValue;
+
+      if ($button.hasClass("cart-qty-button--plus")) {
+        newValue = currentValue + step;
+      } else {
+        newValue = currentValue - step;
+      }
+
+      if (newValue < min) {
+        newValue = min;
+      }
+
+      if (newValue > max) {
+        newValue = max;
+      }
+
+      $input.val(newValue).trigger("change");
+    },
+  );
+
+  $(document).on(
+    "change",
+    ".cart-custom-item__quantity input.qty",
+    function () {
+      triggerCartUpdate();
+    },
+  );
+
+  $(document.body).on("updated_cart_totals updated_wc_div", function () {
+    initCustomCartQuantity();
+  });
+
+  initCustomCartQuantity();
+});
