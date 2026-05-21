@@ -2601,6 +2601,9 @@
 
             .woo-variation-items-wrapper,
             .variable-items-wrapper {
+                &::before {
+                    display: none;
+                }
                 display: flex !important;
                 flex-wrap: wrap;
                 gap: 6px;
@@ -4120,6 +4123,13 @@
         }
     }
     .cart-custom-item {
+        &__product {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start !important;
+            gap: 10px;
+        }
+
         &__config-row {
             display: grid !important;
             grid-template-columns: auto minmax(0, 1fr) 220px !important;

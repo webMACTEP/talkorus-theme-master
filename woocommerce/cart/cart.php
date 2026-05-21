@@ -82,21 +82,80 @@ do_action('woocommerce_before_cart');
 										<?php echo esc_html($product_name); ?>
 									</div>
 								<?php endif; ?>
+								<div class="sku-wrapper">
 
-								<?php if ($product_sku) : ?>
-									<div class="cart-custom-item__sku">
-										Артикул <?php echo esc_html($product_sku); ?>
+									<?php if ($product_sku) : ?>
+										<div class="cart-custom-item__sku">
+											Артикул <?php echo esc_html($product_sku); ?>
+										</div>
+									<?php endif; ?>
+									<div class="cart-custom-item__remove no-desctop">
+										<?php
+										echo apply_filters(
+											'woocommerce_cart_item_remove_link',
+											sprintf(
+												'<a role="button" href="%s" class="remove cart-custom-item__remove-link" aria-label="%s" data-product_id="%s" data-product_sku="%s">Удалить товар</a>',
+												esc_url(wc_get_cart_remove_url($cart_item_key)),
+												esc_attr(sprintf(__('Remove %s from cart', 'woocommerce'), wp_strip_all_tags($product_name))),
+												esc_attr($product_id),
+												esc_attr($_product->get_sku())
+											),
+											$cart_item_key
+										); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+										?>
 									</div>
-								<?php endif; ?>
+								</div>
+
 							</div>
 
-							<div class="cart-custom-item__price">
+							<div class="quantity-wrapper no-desctop">
+
+								<div class="cart-custom-item__price">
+									<?php
+									echo apply_filters('woocommerce_cart_item_price', WC()->cart->get_product_price($_product), $cart_item, $cart_item_key); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									?>
+								</div>
+
+								<div class="cart-custom-item__quantity">
+									<?php
+									if ($_product->is_sold_individually()) {
+										$min_quantity = 1;
+										$max_quantity = 1;
+									} else {
+										$min_quantity = 0;
+										$max_quantity = $_product->get_max_purchase_quantity();
+									}
+
+									$product_quantity = woocommerce_quantity_input(
+										array(
+											'input_name'   => "cart[{$cart_item_key}][qty]",
+											'input_value'  => $cart_item['quantity'],
+											'max_value'    => $max_quantity,
+											'min_value'    => $min_quantity,
+											'product_name' => $product_name,
+										),
+										$_product,
+										false
+									);
+
+									echo apply_filters('woocommerce_cart_item_quantity', $product_quantity, $cart_item_key, $cart_item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									?>
+								</div>
+
+								<div class="cart-custom-item__subtotal">
+									<?php
+									echo apply_filters('woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal($_product, $cart_item['quantity']), $cart_item, $cart_item_key); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									?>
+								</div>
+							</div>
+
+							<div class="cart-custom-item__price no-mobile">
 								<?php
 								echo apply_filters('woocommerce_cart_item_price', WC()->cart->get_product_price($_product), $cart_item, $cart_item_key); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								?>
 							</div>
 
-							<div class="cart-custom-item__quantity">
+							<div class="cart-custom-item__quantity no-mobile">
 								<?php
 								if ($_product->is_sold_individually()) {
 									$min_quantity = 1;
@@ -122,13 +181,14 @@ do_action('woocommerce_before_cart');
 								?>
 							</div>
 
-							<div class="cart-custom-item__subtotal">
+							<div class="cart-custom-item__subtotal no-mobile">
 								<?php
 								echo apply_filters('woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal($_product, $cart_item['quantity']), $cart_item, $cart_item_key); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								?>
 							</div>
 
-							<div class="cart-custom-item__remove">
+
+							<div class="cart-custom-item__remove no-mobile">
 								<?php
 								echo apply_filters(
 									'woocommerce_cart_item_remove_link',
