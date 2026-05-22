@@ -637,3 +637,339 @@ function talkorus_update_cart_item_variation()
 		'remove_url'         => wc_get_cart_remove_url($new_cart_item_key),
 	));
 }
+
+
+//vkladki
+
+add_action('acf/init', 'talkorus_register_product_tabs_acf_fields');
+
+function talkorus_register_product_tabs_acf_fields()
+{
+	if (!function_exists('acf_add_local_field_group')) {
+		return;
+	}
+
+	acf_add_local_field_group(array(
+		'key' => 'group_talkorus_product_tabs',
+		'title' => 'Вкладки товара',
+		'fields' => array(
+			array(
+				'key' => 'field_talkorus_tab_description_heading',
+				'label' => 'Описание — заголовок',
+				'name' => 'talkorus_tab_description_heading',
+				'type' => 'text',
+				'default_value' => '',
+			),
+			array(
+				'key' => 'field_talkorus_tab_description_content',
+				'label' => 'Описание — текст',
+				'name' => 'talkorus_tab_description_content',
+				'type' => 'wysiwyg',
+				'tabs' => 'all',
+				'toolbar' => 'full',
+				'media_upload' => 1,
+			),
+
+			array(
+				'key' => 'field_talkorus_tab_cut_content',
+				'label' => 'Печь в разрезе',
+				'name' => 'talkorus_tab_cut_content',
+				'type' => 'wysiwyg',
+				'tabs' => 'all',
+				'toolbar' => 'full',
+				'media_upload' => 1,
+			),
+			array(
+				'key' => 'field_talkorus_tab_scheme_content',
+				'label' => 'Схема работы печи',
+				'name' => 'talkorus_tab_scheme_content',
+				'type' => 'wysiwyg',
+				'tabs' => 'all',
+				'toolbar' => 'full',
+				'media_upload' => 1,
+			),
+			array(
+				'key' => 'field_talkorus_tab_purpose_content',
+				'label' => 'Назначения',
+				'name' => 'talkorus_tab_purpose_content',
+				'type' => 'wysiwyg',
+				'tabs' => 'all',
+				'toolbar' => 'full',
+				'media_upload' => 1,
+			),
+			array(
+				'key' => 'field_talkorus_tab_advantages_content',
+				'label' => 'Преимущества',
+				'name' => 'talkorus_tab_advantages_content',
+				'type' => 'wysiwyg',
+				'tabs' => 'all',
+				'toolbar' => 'full',
+				'media_upload' => 1,
+			),
+			array(
+				'key' => 'field_talkorus_tab_docs_content',
+				'label' => 'Документация',
+				'name' => 'talkorus_tab_docs_content',
+				'type' => 'wysiwyg',
+				'tabs' => 'all',
+				'toolbar' => 'full',
+				'media_upload' => 1,
+			),
+			array(
+				'key' => 'field_talkorus_tab_video_content',
+				'label' => 'Видео',
+				'name' => 'talkorus_tab_video_content',
+				'type' => 'wysiwyg',
+				'tabs' => 'all',
+				'toolbar' => 'full',
+				'media_upload' => 1,
+			),
+			array(
+				'key' => 'field_talkorus_tab_projects_content',
+				'label' => 'Для проектов',
+				'name' => 'talkorus_tab_projects_content',
+				'type' => 'wysiwyg',
+				'tabs' => 'all',
+				'toolbar' => 'full',
+				'media_upload' => 1,
+			),
+		),
+		'location' => array(
+			array(
+				array(
+					'param' => 'post_type',
+					'operator' => '==',
+					'value' => 'product',
+				),
+			),
+		),
+		'position' => 'normal',
+		'style' => 'default',
+		'label_placement' => 'top',
+		'instruction_placement' => 'label',
+		'active' => true,
+	));
+}
+
+add_filter('woocommerce_product_tabs', 'talkorus_product_acf_tabs', 30);
+
+function talkorus_product_acf_tabs($tabs)
+{
+	global $product;
+
+	if (!$product) {
+		return $tabs;
+	}
+
+	$product_id = $product->get_id();
+
+	/*
+	 * Убираем стандартные вкладки, если они не нужны.
+	 */
+	unset($tabs['additional_information']);
+	unset($tabs['reviews']);
+
+	$description_content = function_exists('get_field') ? get_field('talkorus_tab_description_content', $product_id) : '';
+	$product_description = $product->get_description();
+
+	if (!empty($description_content) || !empty($product_description)) {
+		$tabs['description'] = array(
+			'title'    => 'Описание',
+			'priority' => 10,
+			'callback' => 'talkorus_render_product_description_tab',
+		);
+	} else {
+		unset($tabs['description']);
+	}
+
+	$acf_tabs = array(
+		'talkorus_cut' => array(
+			'title'    => 'Печь в разрезе',
+			'field'    => 'talkorus_tab_cut_content',
+			'priority' => 20,
+		),
+		'talkorus_scheme' => array(
+			'title'    => 'Схема работы печи',
+			'field'    => 'talkorus_tab_scheme_content',
+			'priority' => 30,
+		),
+		'talkorus_purpose' => array(
+			'title'    => 'Назначения',
+			'field'    => 'talkorus_tab_purpose_content',
+			'priority' => 40,
+		),
+		'talkorus_advantages' => array(
+			'title'    => 'Преимущества',
+			'field'    => 'talkorus_tab_advantages_content',
+			'priority' => 50,
+		),
+		'talkorus_docs' => array(
+			'title'    => 'Документация',
+			'field'    => 'talkorus_tab_docs_content',
+			'priority' => 60,
+		),
+		'talkorus_video' => array(
+			'title'    => 'Видео',
+			'field'    => 'talkorus_tab_video_content',
+			'priority' => 70,
+		),
+		'talkorus_projects' => array(
+			'title'    => 'Для проектов',
+			'field'    => 'talkorus_tab_projects_content',
+			'priority' => 80,
+		),
+	);
+
+	foreach ($acf_tabs as $tab_key => $tab_data) {
+		$content = function_exists('get_field') ? get_field($tab_data['field'], $product_id) : '';
+
+		if (empty($content)) {
+			continue;
+		}
+
+		$tabs[$tab_key] = array(
+			'title'    => $tab_data['title'],
+			'priority' => $tab_data['priority'],
+			'callback' => 'talkorus_render_product_acf_tab',
+			'field'    => $tab_data['field'],
+		);
+	}
+
+	return $tabs;
+}
+
+function talkorus_render_product_description_tab($key, $tab)
+{
+	global $product;
+
+	if (!$product) {
+		return;
+	}
+
+	$product_id = $product->get_id();
+
+	$heading = function_exists('get_field') ? get_field('talkorus_tab_description_heading', $product_id) : '';
+	$content = function_exists('get_field') ? get_field('talkorus_tab_description_content', $product_id) : '';
+
+	if (empty($heading)) {
+		$heading = get_the_title($product_id);
+	}
+
+	if (empty($content)) {
+		$content = $product->get_description();
+	}
+
+	if (!empty($heading)) {
+		echo '<h2>' . esc_html($heading) . '</h2>';
+	}
+
+	if (!empty($content)) {
+		echo apply_filters('the_content', $content);
+	}
+}
+
+function talkorus_render_product_acf_tab($key, $tab)
+{
+	global $product;
+
+	if (!$product || empty($tab['field'])) {
+		return;
+	}
+
+	$content = function_exists('get_field') ? get_field($tab['field'], $product->get_id()) : '';
+
+	if (empty($content)) {
+		return;
+	}
+
+	echo apply_filters('the_content', $content);
+}
+
+
+// преимущества
+
+add_action('acf/init', 'talkorus_register_product_features_acf_fields');
+
+function talkorus_register_product_features_acf_fields()
+{
+	if (!function_exists('acf_add_local_field_group')) {
+		return;
+	}
+
+	acf_add_local_field_group(array(
+		'key' => 'group_talkorus_product_features',
+		'title' => 'Преимущества товара',
+		'fields' => array(
+			array(
+				'key' => 'field_talkorus_product_features',
+				'label' => 'Преимущества',
+				'name' => 'talkorus_product_features',
+				'type' => 'repeater',
+				'instructions' => 'Добавьте иконку и текст преимущества. Например: Быстрая сухая сборка.',
+				'required' => 0,
+				'layout' => 'row',
+				'button_label' => 'Добавить преимущество',
+				'sub_fields' => array(
+					array(
+						'key' => 'field_talkorus_product_feature_icon',
+						'label' => 'Иконка',
+						'name' => 'icon',
+						'type' => 'image',
+						'return_format' => 'array',
+						'preview_size' => 'thumbnail',
+						'library' => 'all',
+					),
+					array(
+						'key' => 'field_talkorus_product_feature_title',
+						'label' => 'Заголовок',
+						'name' => 'title',
+						'type' => 'text',
+						'required' => 0,
+					),
+				),
+			),
+		),
+		'location' => array(
+			array(
+				array(
+					'param' => 'post_type',
+					'operator' => '==',
+					'value' => 'product',
+				),
+			),
+		),
+		'position' => 'normal',
+		'style' => 'default',
+		'label_placement' => 'top',
+		'instruction_placement' => 'label',
+		'active' => true,
+	));
+}
+
+
+add_action('woocommerce_after_add_to_cart_button', 'talkorus_single_product_consult_button');
+
+function talkorus_single_product_consult_button()
+{
+    echo '<button type="button" class="single-product-custom__consult">Нужна консультация</button>';
+}
+
+add_action('woocommerce_before_add_to_cart_button', 'talkorus_simple_product_price_inside_form', 5);
+
+function talkorus_simple_product_price_inside_form()
+{
+    if (!is_product()) {
+        return;
+    }
+
+    global $product;
+
+    if (!$product || !$product->is_type('simple')) {
+        return;
+    }
+
+    echo '<div class="single-product-form-price">';
+        echo '<span>Цена:</span>';
+        woocommerce_template_single_price();
+    echo '</div>';
+}

@@ -527,3 +527,104 @@ jQuery(function ($) {
     updateCartVariation($item);
   });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const tabs = document.querySelectorAll(".product-tabs__nav-link");
+
+  if (!tabs.length) {
+    return;
+  }
+
+  tabs.forEach(function (tabLink) {
+    tabLink.addEventListener("click", function (event) {
+      event.preventDefault();
+
+      const targetId = tabLink.getAttribute("href");
+
+      if (!targetId) {
+        return;
+      }
+
+      const tabsWrapper = tabLink.closest(".product-tabs");
+
+      if (!tabsWrapper) {
+        return;
+      }
+
+      tabsWrapper
+        .querySelectorAll(".product-tabs__nav-item")
+        .forEach(function (item) {
+          item.classList.remove("active");
+        });
+
+      tabsWrapper
+        .querySelectorAll(".product-tabs__panel")
+        .forEach(function (panel) {
+          panel.classList.remove("active");
+          panel.style.display = "none";
+        });
+
+      tabLink.closest(".product-tabs__nav-item").classList.add("active");
+
+      const targetPanel = tabsWrapper.querySelector(targetId);
+
+      if (targetPanel) {
+        targetPanel.classList.add("active");
+        targetPanel.style.display = "block";
+      }
+    });
+  });
+});
+
+
+jQuery(function ($) {
+    function initSingleProductQuantity() {
+        $('.single-product-custom .quantity').each(function () {
+            const $quantity = $(this);
+
+            if ($quantity.hasClass('single-product-qty-initialized')) {
+                return;
+            }
+
+            $quantity.addClass('single-product-qty-initialized');
+
+            $quantity.prepend('<button type="button" class="single-product-qty-button single-product-qty-button--minus">-</button>');
+            $quantity.append('<button type="button" class="single-product-qty-button single-product-qty-button--plus">+</button>');
+        });
+    }
+
+    $(document).on('click', '.single-product-qty-button--minus, .single-product-qty-button--plus', function () {
+        const $button = $(this);
+        const $quantity = $button.closest('.quantity');
+        const $input = $quantity.find('input.qty');
+
+        const currentValue = parseFloat($input.val()) || 1;
+        const min = parseFloat($input.attr('min')) || 1;
+        const max = parseFloat($input.attr('max')) || 999999;
+        const step = parseFloat($input.attr('step')) || 1;
+
+        let newValue = currentValue;
+
+        if ($button.hasClass('single-product-qty-button--plus')) {
+            newValue = currentValue + step;
+        } else {
+            newValue = currentValue - step;
+        }
+
+        if (newValue < min) {
+            newValue = min;
+        }
+
+        if (newValue > max) {
+            newValue = max;
+        }
+
+        $input.val(newValue).trigger('change');
+    });
+
+    initSingleProductQuantity();
+
+    $(document.body).on('found_variation reset_data', function () {
+        initSingleProductQuantity();
+    });
+});
