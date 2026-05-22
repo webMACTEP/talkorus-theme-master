@@ -3443,8 +3443,8 @@
   }
   .single-product-custom {
     /* -------------------------
-       Product gallery
-    ------------------------- */
+    Product gallery
+     ------------------------- */
   }
   .single-product-custom .woocommerce-product-gallery {
     width: 100% !important;
@@ -3518,8 +3518,8 @@
   }
   .single-product-custom {
     /* -------------------------
-       Features
-    ------------------------- */
+    Features
+     ------------------------- */
   }
   .single-product-custom__features {
     margin-top: 28px;
@@ -3529,8 +3529,8 @@
   }
   .single-product-custom {
     /* -------------------------
-       Characteristics
-    ------------------------- */
+    Characteristics
+     ------------------------- */
   }
   .single-product-custom__block-title {
     margin: 0 0 14px;
@@ -3628,8 +3628,8 @@
   }
   .single-product-custom {
     /* -------------------------
-       Simple product form
-    ------------------------- */
+    Simple product form
+     ------------------------- */
   }
   .single-product-custom form.cart:not(.variations_form) {
     margin-top: 32px;
@@ -3705,8 +3705,8 @@
   }
   .single-product-custom {
     /* -------------------------
-       Quantity
-    ------------------------- */
+    Quantity
+     ------------------------- */
   }
   .single-product-custom .quantity {
     grid-area: quantity;
@@ -3806,8 +3806,8 @@
     color: #a9613d;
   }
   /* =========================================================
-     SINGLE PRODUCT QUANTITY BUTTONS
-  ========================================================= */
+  SINGLE PRODUCT QUANTITY BUTTONS
+   ========================================================= */
   .single-product-qty-button {
     display: flex !important;
     align-items: center;
@@ -3829,8 +3829,8 @@
     color: #a9613d;
   }
   /* =========================================================
-     SINGLE PRODUCT FEATURES
-  ========================================================= */
+  SINGLE PRODUCT FEATURES
+   ========================================================= */
   .single-product-feature {
     display: flex;
     align-items: center;
@@ -3859,8 +3859,8 @@
     display: block;
   }
   /* =========================================================
-     SINGLE PRODUCT CHARACTERISTICS
-  ========================================================= */
+  SINGLE PRODUCT CHARACTERISTICS
+   ========================================================= */
   .single-product-chars__row {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
@@ -3884,8 +3884,8 @@
     white-space: nowrap;
   }
   /* =========================================================
-     PRODUCT TABS
-  ========================================================= */
+  PRODUCT TABS
+   ========================================================= */
   .product-tabs {
     margin-top: 50px;
   }
@@ -3993,8 +3993,8 @@
     color: #000;
   }
   /* =========================================================
-     OVERRIDE WOOCOMMERCE PRODUCT TABS
-  ========================================================= */
+  OVERRIDE WOOCOMMERCE PRODUCT TABS
+   ========================================================= */
   .woocommerce div.product .woocommerce-tabs.product-tabs ul.tabs.product-tabs__nav {
     display: flex !important;
     flex-wrap: wrap;
