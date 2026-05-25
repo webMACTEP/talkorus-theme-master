@@ -3588,6 +3588,12 @@
         line-height: normal;
         text-transform: none;
     }
+     .about-info.faq-pp {
+        .container {
+            margin: 0px 0px 0px 0px;
+            padding: 0px 0px 0px 0px;
+        }
+    }
 
     /* =========================================================
    ORDER ITEMS
@@ -4168,9 +4174,47 @@
 
     /* =========================================================
    SINGLE PRODUCT PAGE
-========================================================= */
+    ========================================================= */
 
     .single-product-custom {
+        table.variations {
+            width: 100%;
+            border-collapse: separate !important;
+            border-spacing: 0 22px !important;
+            margin: -22px 0 0 !important;
+        }
+
+        table.variations tr {
+            margin: 0 !important;
+        }
+
+        table.variations th,
+        table.variations td {
+            padding: 0 !important;
+            vertical-align: top;
+        }
+        .variable-item.button-variable-item.selected {
+            color: #a9613d !important;
+            box-shadow: 0 0 0 2px #a9613d !important;
+        }
+        .variable-item.button-variable-item {
+            padding: 10px 30px !important;
+        }
+        .variable-item:not(.radio-variable-item) {
+            height: 50px !important;
+            min-width: 50px;
+        }
+        .variations th .woo-selected-variation-item-name {
+            color: #a9613d;
+        }
+        .variations label {
+            color: #54595f;
+            font-family: "PT Sans";
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+        }
         &__title {
             margin: 0 0 20px;
 
@@ -4597,7 +4641,7 @@
 
             color: #000 !important;
             font-family: "PT Sans", sans-serif !important;
-            font-size: 20px !important;
+            font-size: 15px !important;
             font-weight: 400 !important;
             line-height: normal !important;
             text-decoration: none !important;

@@ -973,3 +973,86 @@ function talkorus_simple_product_price_inside_form()
         woocommerce_template_single_price();
     echo '</div>';
 }
+
+add_action('acf/init', 'talkorus_register_pages_settings_acf');
+
+function talkorus_register_pages_settings_acf()
+{
+    if (!function_exists('acf_add_options_page') || !function_exists('acf_add_local_field_group')) {
+        return;
+    }
+
+    acf_add_options_page(array(
+        'page_title' => 'Настройка страниц',
+        'menu_title' => 'Настройка страниц',
+        'menu_slug'  => 'talkorus-pages-settings',
+        'capability' => 'edit_posts',
+        'redirect'   => false,
+        'position'   => 59,
+        'icon_url'   => 'dashicons-admin-page',
+    ));
+
+    acf_add_local_field_group(array(
+        'key' => 'group_talkorus_pages_settings',
+        'title' => 'Общие блоки страниц',
+        'fields' => array(
+            array(
+                'key' => 'field_talkorus_faq_tab',
+                'label' => 'FAQ',
+                'type' => 'tab',
+                'placement' => 'top',
+            ),
+            array(
+                'key' => 'field_talkorus_faq_title',
+                'label' => 'Заголовок блока FAQ',
+                'name' => 'talkorus_faq_title',
+                'type' => 'text',
+                'default_value' => 'FAQ',
+                'placeholder' => 'FAQ',
+            ),
+            array(
+                'key' => 'field_talkorus_faq_items',
+                'label' => 'Вопросы и ответы',
+                'name' => 'talkorus_faq_items',
+                'type' => 'repeater',
+                'layout' => 'row',
+                'button_label' => 'Добавить вопрос',
+                'collapsed' => 'field_talkorus_faq_question',
+                'sub_fields' => array(
+                    array(
+                        'key' => 'field_talkorus_faq_question',
+                        'label' => 'Вопрос',
+                        'name' => 'question',
+                        'type' => 'text',
+                        'required' => 0,
+                        'placeholder' => 'Введите вопрос',
+                    ),
+                    array(
+                        'key' => 'field_talkorus_faq_answer',
+                        'label' => 'Ответ',
+                        'name' => 'answer',
+                        'type' => 'wysiwyg',
+                        'required' => 0,
+                        'tabs' => 'all',
+                        'toolbar' => 'basic',
+                        'media_upload' => 0,
+                    ),
+                ),
+            ),
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param' => 'options_page',
+                    'operator' => '==',
+                    'value' => 'talkorus-pages-settings',
+                ),
+            ),
+        ),
+        'position' => 'normal',
+        'style' => 'default',
+        'label_placement' => 'top',
+        'instruction_placement' => 'label',
+        'active' => true,
+    ));
+}

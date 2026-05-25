@@ -355,83 +355,151 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 jQuery(function ($) {
-  function initCustomCartQuantity() {
-    $(".cart-custom-item__quantity .quantity").each(function () {
-      const $quantity = $(this);
+    function escapeSelector(value) {
+        if ($.escapeSelector) {
+            return $.escapeSelector(value);
+        }
 
-      if ($quantity.hasClass("cart-qty-initialized")) {
-        return;
-      }
+        return value.replace(/([ !"#$%&'()*+,./:;<=>?@[\\\]^`{|}~])/g, "\\$1");
+    }
 
-      $quantity.addClass("cart-qty-initialized");
+    function initCustomCartQuantity() {
+        $(".cart-custom-item__quantity .quantity").each(function () {
+            const $quantity = $(this);
 
-      $quantity.prepend(
-        '<button type="button" class="cart-qty-button cart-qty-button--minus">-</button>',
-      );
-      $quantity.append(
-        '<button type="button" class="cart-qty-button cart-qty-button--plus">+</button>',
-      );
+            if ($quantity.hasClass("cart-qty-initialized")) {
+                return;
+            }
+
+            $quantity.addClass("cart-qty-initialized");
+
+            $quantity.prepend(
+                '<button type="button" class="cart-qty-button cart-qty-button--minus">-</button>',
+            );
+
+            $quantity.append(
+                '<button type="button" class="cart-qty-button cart-qty-button--plus">+</button>',
+            );
+        });
+    }
+
+    function syncDuplicateCartQuantityInputs($input) {
+        const name = $input.attr("name");
+
+        if (!name) {
+            return;
+        }
+
+        const $item = $input.closest(".cart-custom-item");
+
+        if (!$item.length) {
+            return;
+        }
+
+        const value = $input.val();
+
+        $item
+            .find('input.qty[name="' + escapeSelector(name) + '"]')
+            .not($input)
+            .val(value);
+    }
+
+    function syncVisibleCartQuantityInputs() {
+        $(".cart-custom-item").each(function () {
+            const $item = $(this);
+
+            const $inputs = $item.find(
+                '.cart-custom-item__quantity input.qty[name^="cart["]',
+            );
+
+            if ($inputs.length < 2) {
+                return;
+            }
+
+            const $visibleInput = $inputs
+                .filter(function () {
+                    return $(this).closest(".cart-custom-item__quantity").is(":visible");
+                })
+                .first();
+
+            const $source = $visibleInput.length ? $visibleInput : $inputs.first();
+
+            $inputs.val($source.val());
+        });
+    }
+
+    function triggerCartUpdate() {
+        const $updateButton = $('button[name="update_cart"]');
+
+        syncVisibleCartQuantityInputs();
+
+        $updateButton.prop("disabled", false);
+
+        clearTimeout(window.talkorusCartUpdateTimer);
+
+        window.talkorusCartUpdateTimer = setTimeout(function () {
+            syncVisibleCartQuantityInputs();
+
+            $updateButton.prop("disabled", false);
+            $updateButton.trigger("click");
+        }, 500);
+    }
+
+    $(document).on(
+        "click",
+        ".cart-qty-button--minus, .cart-qty-button--plus",
+        function () {
+            const $button = $(this);
+            const $quantity = $button.closest(".quantity");
+            const $input = $quantity.find("input.qty");
+
+            const currentValue = parseFloat($input.val()) || 0;
+            const min = parseFloat($input.attr("min")) || 0;
+            const max = parseFloat($input.attr("max")) || 999999;
+            const step = parseFloat($input.attr("step")) || 1;
+
+            let newValue = currentValue;
+
+            if ($button.hasClass("cart-qty-button--plus")) {
+                newValue = currentValue + step;
+            } else {
+                newValue = currentValue - step;
+            }
+
+            if (newValue < min) {
+                newValue = min;
+            }
+
+            if (newValue > max) {
+                newValue = max;
+            }
+
+            $input.val(newValue);
+
+            syncDuplicateCartQuantityInputs($input);
+
+            $input.trigger("change");
+        },
+    );
+
+    $(document).on(
+        "change input",
+        ".cart-custom-item__quantity input.qty",
+        function () {
+            const $input = $(this);
+
+            syncDuplicateCartQuantityInputs($input);
+            triggerCartUpdate();
+        },
+    );
+
+    $(document.body).on("updated_cart_totals updated_wc_div", function () {
+        initCustomCartQuantity();
+        syncVisibleCartQuantityInputs();
     });
-  }
 
-  function triggerCartUpdate() {
-    const $updateButton = $('button[name="update_cart"]');
-
-    $updateButton.prop("disabled", false);
-
-    clearTimeout(window.talkorusCartUpdateTimer);
-
-    window.talkorusCartUpdateTimer = setTimeout(function () {
-      $updateButton.trigger("click");
-    }, 500);
-  }
-
-  $(document).on(
-    "click",
-    ".cart-qty-button--minus, .cart-qty-button--plus",
-    function () {
-      const $button = $(this);
-      const $quantity = $button.closest(".quantity");
-      const $input = $quantity.find("input.qty");
-
-      const currentValue = parseFloat($input.val()) || 0;
-      const min = parseFloat($input.attr("min")) || 0;
-      const max = parseFloat($input.attr("max")) || 999999;
-      const step = parseFloat($input.attr("step")) || 1;
-
-      let newValue = currentValue;
-
-      if ($button.hasClass("cart-qty-button--plus")) {
-        newValue = currentValue + step;
-      } else {
-        newValue = currentValue - step;
-      }
-
-      if (newValue < min) {
-        newValue = min;
-      }
-
-      if (newValue > max) {
-        newValue = max;
-      }
-
-      $input.val(newValue).trigger("change");
-    },
-  );
-
-  $(document).on(
-    "change",
-    ".cart-custom-item__quantity input.qty",
-    function () {
-      triggerCartUpdate();
-    },
-  );
-
-  $(document.body).on("updated_cart_totals updated_wc_div", function () {
     initCustomCartQuantity();
-  });
-
-  initCustomCartQuantity();
+    syncVisibleCartQuantityInputs();
 });
 
 jQuery(function ($) {

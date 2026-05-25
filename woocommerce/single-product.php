@@ -23,7 +23,7 @@ if (! defined('ABSPATH')) {
 get_header('shop'); ?>
 <div class="container">
 
- <div class="catalog-breadcrumbs">
+ <div class="catalog-breadcrumbs no-mobile">
             <?php woocommerce_breadcrumb(); ?>
         </div>
 	<?php
