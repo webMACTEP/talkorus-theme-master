@@ -441,7 +441,7 @@
 						</div>
 					</li>
 					<li>
-						<a href="#">
+						<a href="<?php echo esc_url(home_url('/projects/')); ?>">
 							<div class="ico">
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -1109,7 +1109,7 @@
 						</div>
 					</li>
 					<li>
-						<a href="#">
+						<a href="<?php echo esc_url(home_url('/projects/')); ?>">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="39"

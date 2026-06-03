@@ -95,6 +95,7 @@ jQuery(document).ready(function ($) {
       new Swiper(slider, {
         loop: true,
         speed: 600,
+        autoHeight: true,
         slidesPerView: 1,
         spaceBetween: 0,
         navigation: {
@@ -355,151 +356,151 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 jQuery(function ($) {
-    function escapeSelector(value) {
-        if ($.escapeSelector) {
-            return $.escapeSelector(value);
-        }
-
-        return value.replace(/([ !"#$%&'()*+,./:;<=>?@[\\\]^`{|}~])/g, "\\$1");
+  function escapeSelector(value) {
+    if ($.escapeSelector) {
+      return $.escapeSelector(value);
     }
 
-    function initCustomCartQuantity() {
-        $(".cart-custom-item__quantity .quantity").each(function () {
-            const $quantity = $(this);
+    return value.replace(/([ !"#$%&'()*+,./:;<=>?@[\\\]^`{|}~])/g, "\\$1");
+  }
 
-            if ($quantity.hasClass("cart-qty-initialized")) {
-                return;
-            }
+  function initCustomCartQuantity() {
+    $(".cart-custom-item__quantity .quantity").each(function () {
+      const $quantity = $(this);
 
-            $quantity.addClass("cart-qty-initialized");
+      if ($quantity.hasClass("cart-qty-initialized")) {
+        return;
+      }
 
-            $quantity.prepend(
-                '<button type="button" class="cart-qty-button cart-qty-button--minus">-</button>',
-            );
+      $quantity.addClass("cart-qty-initialized");
 
-            $quantity.append(
-                '<button type="button" class="cart-qty-button cart-qty-button--plus">+</button>',
-            );
-        });
-    }
+      $quantity.prepend(
+        '<button type="button" class="cart-qty-button cart-qty-button--minus">-</button>',
+      );
 
-    function syncDuplicateCartQuantityInputs($input) {
-        const name = $input.attr("name");
-
-        if (!name) {
-            return;
-        }
-
-        const $item = $input.closest(".cart-custom-item");
-
-        if (!$item.length) {
-            return;
-        }
-
-        const value = $input.val();
-
-        $item
-            .find('input.qty[name="' + escapeSelector(name) + '"]')
-            .not($input)
-            .val(value);
-    }
-
-    function syncVisibleCartQuantityInputs() {
-        $(".cart-custom-item").each(function () {
-            const $item = $(this);
-
-            const $inputs = $item.find(
-                '.cart-custom-item__quantity input.qty[name^="cart["]',
-            );
-
-            if ($inputs.length < 2) {
-                return;
-            }
-
-            const $visibleInput = $inputs
-                .filter(function () {
-                    return $(this).closest(".cart-custom-item__quantity").is(":visible");
-                })
-                .first();
-
-            const $source = $visibleInput.length ? $visibleInput : $inputs.first();
-
-            $inputs.val($source.val());
-        });
-    }
-
-    function triggerCartUpdate() {
-        const $updateButton = $('button[name="update_cart"]');
-
-        syncVisibleCartQuantityInputs();
-
-        $updateButton.prop("disabled", false);
-
-        clearTimeout(window.talkorusCartUpdateTimer);
-
-        window.talkorusCartUpdateTimer = setTimeout(function () {
-            syncVisibleCartQuantityInputs();
-
-            $updateButton.prop("disabled", false);
-            $updateButton.trigger("click");
-        }, 500);
-    }
-
-    $(document).on(
-        "click",
-        ".cart-qty-button--minus, .cart-qty-button--plus",
-        function () {
-            const $button = $(this);
-            const $quantity = $button.closest(".quantity");
-            const $input = $quantity.find("input.qty");
-
-            const currentValue = parseFloat($input.val()) || 0;
-            const min = parseFloat($input.attr("min")) || 0;
-            const max = parseFloat($input.attr("max")) || 999999;
-            const step = parseFloat($input.attr("step")) || 1;
-
-            let newValue = currentValue;
-
-            if ($button.hasClass("cart-qty-button--plus")) {
-                newValue = currentValue + step;
-            } else {
-                newValue = currentValue - step;
-            }
-
-            if (newValue < min) {
-                newValue = min;
-            }
-
-            if (newValue > max) {
-                newValue = max;
-            }
-
-            $input.val(newValue);
-
-            syncDuplicateCartQuantityInputs($input);
-
-            $input.trigger("change");
-        },
-    );
-
-    $(document).on(
-        "change input",
-        ".cart-custom-item__quantity input.qty",
-        function () {
-            const $input = $(this);
-
-            syncDuplicateCartQuantityInputs($input);
-            triggerCartUpdate();
-        },
-    );
-
-    $(document.body).on("updated_cart_totals updated_wc_div", function () {
-        initCustomCartQuantity();
-        syncVisibleCartQuantityInputs();
+      $quantity.append(
+        '<button type="button" class="cart-qty-button cart-qty-button--plus">+</button>',
+      );
     });
+  }
 
+  function syncDuplicateCartQuantityInputs($input) {
+    const name = $input.attr("name");
+
+    if (!name) {
+      return;
+    }
+
+    const $item = $input.closest(".cart-custom-item");
+
+    if (!$item.length) {
+      return;
+    }
+
+    const value = $input.val();
+
+    $item
+      .find('input.qty[name="' + escapeSelector(name) + '"]')
+      .not($input)
+      .val(value);
+  }
+
+  function syncVisibleCartQuantityInputs() {
+    $(".cart-custom-item").each(function () {
+      const $item = $(this);
+
+      const $inputs = $item.find(
+        '.cart-custom-item__quantity input.qty[name^="cart["]',
+      );
+
+      if ($inputs.length < 2) {
+        return;
+      }
+
+      const $visibleInput = $inputs
+        .filter(function () {
+          return $(this).closest(".cart-custom-item__quantity").is(":visible");
+        })
+        .first();
+
+      const $source = $visibleInput.length ? $visibleInput : $inputs.first();
+
+      $inputs.val($source.val());
+    });
+  }
+
+  function triggerCartUpdate() {
+    const $updateButton = $('button[name="update_cart"]');
+
+    syncVisibleCartQuantityInputs();
+
+    $updateButton.prop("disabled", false);
+
+    clearTimeout(window.talkorusCartUpdateTimer);
+
+    window.talkorusCartUpdateTimer = setTimeout(function () {
+      syncVisibleCartQuantityInputs();
+
+      $updateButton.prop("disabled", false);
+      $updateButton.trigger("click");
+    }, 500);
+  }
+
+  $(document).on(
+    "click",
+    ".cart-qty-button--minus, .cart-qty-button--plus",
+    function () {
+      const $button = $(this);
+      const $quantity = $button.closest(".quantity");
+      const $input = $quantity.find("input.qty");
+
+      const currentValue = parseFloat($input.val()) || 0;
+      const min = parseFloat($input.attr("min")) || 0;
+      const max = parseFloat($input.attr("max")) || 999999;
+      const step = parseFloat($input.attr("step")) || 1;
+
+      let newValue = currentValue;
+
+      if ($button.hasClass("cart-qty-button--plus")) {
+        newValue = currentValue + step;
+      } else {
+        newValue = currentValue - step;
+      }
+
+      if (newValue < min) {
+        newValue = min;
+      }
+
+      if (newValue > max) {
+        newValue = max;
+      }
+
+      $input.val(newValue);
+
+      syncDuplicateCartQuantityInputs($input);
+
+      $input.trigger("change");
+    },
+  );
+
+  $(document).on(
+    "change input",
+    ".cart-custom-item__quantity input.qty",
+    function () {
+      const $input = $(this);
+
+      syncDuplicateCartQuantityInputs($input);
+      triggerCartUpdate();
+    },
+  );
+
+  $(document.body).on("updated_cart_totals updated_wc_div", function () {
     initCustomCartQuantity();
     syncVisibleCartQuantityInputs();
+  });
+
+  initCustomCartQuantity();
+  syncVisibleCartQuantityInputs();
 });
 
 jQuery(function ($) {
@@ -644,55 +645,148 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
 jQuery(function ($) {
-    function initSingleProductQuantity() {
-        $('.single-product-custom .quantity').each(function () {
-            const $quantity = $(this);
+  function initSingleProductQuantity() {
+    $(".single-product-custom .quantity").each(function () {
+      const $quantity = $(this);
 
-            if ($quantity.hasClass('single-product-qty-initialized')) {
-                return;
-            }
+      if ($quantity.hasClass("single-product-qty-initialized")) {
+        return;
+      }
 
-            $quantity.addClass('single-product-qty-initialized');
+      $quantity.addClass("single-product-qty-initialized");
 
-            $quantity.prepend('<button type="button" class="single-product-qty-button single-product-qty-button--minus">-</button>');
-            $quantity.append('<button type="button" class="single-product-qty-button single-product-qty-button--plus">+</button>');
-        });
+      $quantity.prepend(
+        '<button type="button" class="single-product-qty-button single-product-qty-button--minus">-</button>',
+      );
+      $quantity.append(
+        '<button type="button" class="single-product-qty-button single-product-qty-button--plus">+</button>',
+      );
+    });
+  }
+
+  $(document).on(
+    "click",
+    ".single-product-qty-button--minus, .single-product-qty-button--plus",
+    function () {
+      const $button = $(this);
+      const $quantity = $button.closest(".quantity");
+      const $input = $quantity.find("input.qty");
+
+      const currentValue = parseFloat($input.val()) || 1;
+      const min = parseFloat($input.attr("min")) || 1;
+      const max = parseFloat($input.attr("max")) || 999999;
+      const step = parseFloat($input.attr("step")) || 1;
+
+      let newValue = currentValue;
+
+      if ($button.hasClass("single-product-qty-button--plus")) {
+        newValue = currentValue + step;
+      } else {
+        newValue = currentValue - step;
+      }
+
+      if (newValue < min) {
+        newValue = min;
+      }
+
+      if (newValue > max) {
+        newValue = max;
+      }
+
+      $input.val(newValue).trigger("change");
+    },
+  );
+
+  initSingleProductQuantity();
+
+  $(document.body).on("found_variation reset_data", function () {
+    initSingleProductQuantity();
+  });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const videoButtons = document.querySelectorAll(
+    ".about-us__video[data-video-src]",
+  );
+  const modal = document.querySelector("#videoModal");
+
+  if (!videoButtons.length || !modal) {
+    return;
+  }
+
+  const modalVideo = modal.querySelector(".video-modal__video");
+  const modalSource = modal.querySelector(".video-modal__video source");
+  const closeButtons = modal.querySelectorAll("[data-video-close]");
+
+  function openVideo(videoSrc) {
+    if (!videoSrc || !modalVideo || !modalSource) {
+      return;
     }
 
-    $(document).on('click', '.single-product-qty-button--minus, .single-product-qty-button--plus', function () {
-        const $button = $(this);
-        const $quantity = $button.closest('.quantity');
-        const $input = $quantity.find('input.qty');
+    modalSource.src = videoSrc;
+    modalVideo.load();
 
-        const currentValue = parseFloat($input.val()) || 1;
-        const min = parseFloat($input.attr('min')) || 1;
-        const max = parseFloat($input.attr('max')) || 999999;
-        const step = parseFloat($input.attr('step')) || 1;
+    modal.classList.add("active");
+    modal.setAttribute("aria-hidden", "false");
 
-        let newValue = currentValue;
+    document.body.classList.add("hold");
 
-        if ($button.hasClass('single-product-qty-button--plus')) {
-            newValue = currentValue + step;
-        } else {
-            newValue = currentValue - step;
-        }
+    modalVideo.play().catch(function () {});
+  }
 
-        if (newValue < min) {
-            newValue = min;
-        }
+  function closeVideo() {
+    modal.classList.remove("active");
+    modal.setAttribute("aria-hidden", "true");
 
-        if (newValue > max) {
-            newValue = max;
-        }
+    document.body.classList.remove("hold");
 
-        $input.val(newValue).trigger('change');
+    if (modalVideo) {
+      modalVideo.pause();
+      modalVideo.currentTime = 0;
+    }
+
+    if (modalSource) {
+      modalSource.src = "";
+    }
+  }
+
+  videoButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      openVideo(button.dataset.videoSrc);
     });
+  });
 
-    initSingleProductQuantity();
+  closeButtons.forEach(function (button) {
+    button.addEventListener("click", closeVideo);
+  });
 
-    $(document.body).on('found_variation reset_data', function () {
-        initSingleProductQuantity();
-    });
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && modal.classList.contains("active")) {
+      closeVideo();
+    }
+  });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const projectGallery = document.querySelector(".single-project-gallery");
+
+  if (!projectGallery) {
+    return;
+  }
+
+  new Swiper(projectGallery, {
+    loop: true,
+    speed: 600,
+    slidesPerView: 1,
+    spaceBetween: 0,
+    navigation: {
+      nextEl: projectGallery.querySelector(
+        ".single-project-gallery__nav--next",
+      ),
+      prevEl: projectGallery.querySelector(
+        ".single-project-gallery__nav--prev",
+      ),
+    },
+  });
 });

@@ -951,108 +951,277 @@ add_action('woocommerce_after_add_to_cart_button', 'talkorus_single_product_cons
 
 function talkorus_single_product_consult_button()
 {
-    echo '<button type="button" class="single-product-custom__consult">Нужна консультация</button>';
+	echo '<button type="button" class="single-product-custom__consult">Нужна консультация</button>';
 }
 
 add_action('woocommerce_before_add_to_cart_button', 'talkorus_simple_product_price_inside_form', 5);
 
 function talkorus_simple_product_price_inside_form()
 {
-    if (!is_product()) {
-        return;
-    }
+	if (!is_product()) {
+		return;
+	}
 
-    global $product;
+	global $product;
 
-    if (!$product || !$product->is_type('simple')) {
-        return;
-    }
+	if (!$product || !$product->is_type('simple')) {
+		return;
+	}
 
-    echo '<div class="single-product-form-price">';
-        echo '<span>Цена:</span>';
-        woocommerce_template_single_price();
-    echo '</div>';
+	echo '<div class="single-product-form-price">';
+	echo '<span>Цена:</span>';
+	woocommerce_template_single_price();
+	echo '</div>';
 }
 
 add_action('acf/init', 'talkorus_register_pages_settings_acf');
 
 function talkorus_register_pages_settings_acf()
 {
-    if (!function_exists('acf_add_options_page') || !function_exists('acf_add_local_field_group')) {
-        return;
-    }
+	if (!function_exists('acf_add_options_page') || !function_exists('acf_add_local_field_group')) {
+		return;
+	}
 
-    acf_add_options_page(array(
-        'page_title' => 'Настройка страниц',
-        'menu_title' => 'Настройка страниц',
-        'menu_slug'  => 'talkorus-pages-settings',
-        'capability' => 'edit_posts',
-        'redirect'   => false,
-        'position'   => 59,
-        'icon_url'   => 'dashicons-admin-page',
-    ));
+	acf_add_options_page(array(
+		'page_title' => 'Настройка страниц',
+		'menu_title' => 'Настройка страниц',
+		'menu_slug'  => 'talkorus-pages-settings',
+		'capability' => 'edit_posts',
+		'redirect'   => false,
+		'position'   => 59,
+		'icon_url'   => 'dashicons-admin-page',
+	));
 
-    acf_add_local_field_group(array(
-        'key' => 'group_talkorus_pages_settings',
-        'title' => 'Общие блоки страниц',
-        'fields' => array(
-            array(
-                'key' => 'field_talkorus_faq_tab',
-                'label' => 'FAQ',
-                'type' => 'tab',
-                'placement' => 'top',
-            ),
-            array(
-                'key' => 'field_talkorus_faq_title',
-                'label' => 'Заголовок блока FAQ',
-                'name' => 'talkorus_faq_title',
-                'type' => 'text',
-                'default_value' => 'FAQ',
-                'placeholder' => 'FAQ',
-            ),
-            array(
-                'key' => 'field_talkorus_faq_items',
-                'label' => 'Вопросы и ответы',
-                'name' => 'talkorus_faq_items',
-                'type' => 'repeater',
-                'layout' => 'row',
-                'button_label' => 'Добавить вопрос',
-                'collapsed' => 'field_talkorus_faq_question',
-                'sub_fields' => array(
-                    array(
-                        'key' => 'field_talkorus_faq_question',
-                        'label' => 'Вопрос',
-                        'name' => 'question',
-                        'type' => 'text',
-                        'required' => 0,
-                        'placeholder' => 'Введите вопрос',
-                    ),
-                    array(
-                        'key' => 'field_talkorus_faq_answer',
-                        'label' => 'Ответ',
-                        'name' => 'answer',
-                        'type' => 'wysiwyg',
-                        'required' => 0,
-                        'tabs' => 'all',
-                        'toolbar' => 'basic',
-                        'media_upload' => 0,
-                    ),
-                ),
-            ),
-        ),
-        'location' => array(
-            array(
-                array(
-                    'param' => 'options_page',
-                    'operator' => '==',
-                    'value' => 'talkorus-pages-settings',
-                ),
-            ),
-        ),
-        'position' => 'normal',
-        'style' => 'default',
-        'label_placement' => 'top',
-        'instruction_placement' => 'label',
-        'active' => true,
-    ));
+	acf_add_local_field_group(array(
+		'key' => 'group_talkorus_pages_settings',
+		'title' => 'Общие блоки страниц',
+		'fields' => array(
+			array(
+				'key' => 'field_talkorus_faq_tab',
+				'label' => 'FAQ',
+				'type' => 'tab',
+				'placement' => 'top',
+			),
+			array(
+				'key' => 'field_talkorus_faq_title',
+				'label' => 'Заголовок блока FAQ',
+				'name' => 'talkorus_faq_title',
+				'type' => 'text',
+				'default_value' => 'FAQ',
+				'placeholder' => 'FAQ',
+			),
+			array(
+				'key' => 'field_talkorus_faq_items',
+				'label' => 'Вопросы и ответы',
+				'name' => 'talkorus_faq_items',
+				'type' => 'repeater',
+				'layout' => 'row',
+				'button_label' => 'Добавить вопрос',
+				'collapsed' => 'field_talkorus_faq_question',
+				'sub_fields' => array(
+					array(
+						'key' => 'field_talkorus_faq_question',
+						'label' => 'Вопрос',
+						'name' => 'question',
+						'type' => 'text',
+						'required' => 0,
+						'placeholder' => 'Введите вопрос',
+					),
+					array(
+						'key' => 'field_talkorus_faq_answer',
+						'label' => 'Ответ',
+						'name' => 'answer',
+						'type' => 'wysiwyg',
+						'required' => 0,
+						'tabs' => 'all',
+						'toolbar' => 'basic',
+						'media_upload' => 0,
+					),
+				),
+			),
+
+			array(
+				'key' => 'field_talkorus_about_video_tab',
+				'label' => 'Видео-блок',
+				'type' => 'tab',
+				'placement' => 'top',
+			),
+			array(
+				'key' => 'field_talkorus_about_video_title',
+				'label' => 'Заголовок видео-блока',
+				'name' => 'talkorus_about_video_title',
+				'type' => 'text',
+				'default_value' => 'ТЕПЛОНАКОПИТЕЛЬНЫЕ КАМИНЫ И ПЕЧИ TALKORUS',
+				'placeholder' => 'Введите заголовок блока',
+			),
+			array(
+				'key' => 'field_talkorus_about_video_file',
+				'label' => 'Видео MP4',
+				'name' => 'talkorus_about_video_file',
+				'type' => 'file',
+				'return_format' => 'array',
+				'library' => 'all',
+				'mime_types' => 'mp4',
+			),
+			array(
+				'key' => 'field_talkorus_about_video_preview',
+				'label' => 'Превью видео',
+				'name' => 'talkorus_about_video_preview',
+				'type' => 'image',
+				'return_format' => 'array',
+				'preview_size' => 'medium',
+				'library' => 'all',
+			),
+		),
+		'location' => array(
+			array(
+				array(
+					'param' => 'options_page',
+					'operator' => '==',
+					'value' => 'talkorus-pages-settings',
+				),
+			),
+		),
+		'position' => 'normal',
+		'style' => 'default',
+		'label_placement' => 'top',
+		'instruction_placement' => 'label',
+		'active' => true,
+	));
+}
+add_action('init', 'talkorus_register_projects_post_type');
+
+function talkorus_register_projects_post_type()
+{
+	register_post_type('project', array(
+		'labels' => array(
+			'name'               => 'Проекты',
+			'singular_name'      => 'Проект',
+			'menu_name'          => 'Проекты',
+			'name_admin_bar'     => 'Проект',
+			'add_new'            => 'Добавить проект',
+			'add_new_item'       => 'Добавить новый проект',
+			'new_item'           => 'Новый проект',
+			'edit_item'          => 'Редактировать проект',
+			'view_item'          => 'Смотреть проект',
+			'all_items'          => 'Все проекты',
+			'search_items'       => 'Искать проекты',
+			'not_found'          => 'Проекты не найдены',
+			'not_found_in_trash' => 'В корзине проекты не найдены',
+		),
+		'public'              => true,
+		'has_archive'         => true,
+		'rewrite'             => array(
+			'slug'       => 'projects',
+			'with_front' => false,
+		),
+		'menu_icon'           => 'dashicons-portfolio',
+		'menu_position'       => 22,
+		'supports'            => array(
+			'title',
+			'editor',
+			'thumbnail',
+			'excerpt',
+			'custom-fields',
+		),
+		'show_in_rest'        => true,
+		'publicly_queryable'  => true,
+		'exclude_from_search' => false,
+	));
+}
+add_action('init', 'talkorus_register_project_taxonomy');
+
+function talkorus_register_project_taxonomy()
+{
+	register_taxonomy('project_cat', array('project'), array(
+		'labels' => array(
+			'name'              => 'Категории проектов',
+			'singular_name'     => 'Категория проекта',
+			'search_items'      => 'Искать категории',
+			'all_items'         => 'Все категории',
+			'parent_item'       => 'Родительская категория',
+			'parent_item_colon' => 'Родительская категория:',
+			'edit_item'         => 'Редактировать категорию',
+			'update_item'       => 'Обновить категорию',
+			'add_new_item'      => 'Добавить категорию',
+			'new_item_name'     => 'Название новой категории',
+			'menu_name'         => 'Категории',
+		),
+		'hierarchical'      => true,
+		'public'            => true,
+		'show_ui'           => true,
+		'show_admin_column' => true,
+		'show_in_rest'      => true,
+		'rewrite'           => array(
+			'slug'       => 'project-category',
+			'with_front' => false,
+		),
+	));
+}
+add_action('acf/init', 'talkorus_register_project_gallery_acf_fields');
+
+function talkorus_register_project_gallery_acf_fields()
+{
+	if (!function_exists('acf_add_local_field_group')) {
+		return;
+	}
+
+	acf_add_local_field_group(array(
+		'key' => 'group_talkorus_project_gallery',
+		'title' => 'Поля проекта',
+		'fields' => array(
+			array(
+				'key' => 'field_talkorus_project_gallery',
+				'label' => 'Галерея проекта',
+				'name' => 'talkorus_project_gallery',
+				'type' => 'gallery',
+				'instructions' => 'Загрузите изображения проекта.',
+				'required' => 0,
+				'return_format' => 'array',
+				'preview_size' => 'medium',
+				'insert' => 'append',
+				'library' => 'all',
+				'min' => '',
+				'max' => '',
+				'mime_types' => 'jpg,jpeg,png,webp',
+			),
+			array(
+				'key' => 'field_talkorus_project_button_link',
+				'label' => 'Ссылка кнопки',
+				'name' => 'talkorus_project_button_link',
+				'type' => 'url',
+				'instructions' => 'Например: ссылка на форму, страницу контактов или каталог.',
+				'required' => 0,
+				'placeholder' => 'https://...',
+				'default_value' => '',
+			),
+			array(
+				'key' => 'field_talkorus_project_button_text',
+				'label' => 'Текст кнопки',
+				'name' => 'talkorus_project_button_text',
+				'type' => 'text',
+				'required' => 0,
+				'default_value' => 'Заказать проект',
+				'placeholder' => 'Заказать проект',
+			),
+		),
+		'location' => array(
+			array(
+				array(
+					'param' => 'post_type',
+					'operator' => '==',
+					'value' => 'project',
+				),
+			),
+		),
+		'menu_order' => 10,
+		'position' => 'normal',
+		'style' => 'default',
+		'label_placement' => 'top',
+		'instruction_placement' => 'label',
+		'hide_on_screen' => '',
+		'active' => true,
+		'description' => '',
+		'show_in_rest' => 0,
+	));
 }

@@ -224,6 +224,20 @@ wp_footer(); ?>
         </span>
     </a>
 <?php endif; ?>
+
+<div class="video-modal" id="videoModal" aria-hidden="true">
+    <div class="video-modal__overlay" data-video-close></div>
+
+    <div class="video-modal__content">
+        <button class="video-modal__close" type="button" data-video-close aria-label="Закрыть видео">
+            ×
+        </button>
+
+        <video class="video-modal__video" controls playsinline>
+            <source src="" type="video/mp4">
+        </video>
+    </div>
+</div>
 </body>
 
 </html>
