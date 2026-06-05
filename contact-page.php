@@ -11,7 +11,7 @@ while (have_posts()) : the_post(); ?>
 
 	<div class="page contacts-page">
 		<div class="container">
-			<div class="catalog-breadcrumbs">
+			<div class="catalog-breadcrumbs no-mobile">
 				<?php woocommerce_breadcrumb(); ?>
 			</div>
 
@@ -58,7 +58,7 @@ while (have_posts()) : the_post(); ?>
 										<?php echo esc_html($title); ?>
 									</h3>
 								<?php endif; ?>
-	
+
 								<?php if ($info) : ?>
 									<div class="contacts-list__info">
 										<?php echo wp_kses_post($info); ?>

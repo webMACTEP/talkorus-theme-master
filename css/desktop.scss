@@ -5515,6 +5515,7 @@
     }
 
     .contacts-page {
+        
         .tel {
             color: #000;
             font-family: "PT Sans";
@@ -5588,6 +5589,14 @@
             justify-content: space-between;
 
             margin: 22px 0px 50px 0px;
+        }
+        .contacts-map {
+            iframe {
+                display: block;
+                width: 100% !important;
+                max-width: 100%;
+                height: 680px !important;
+            }
         }
         h1 {
             color: #54595f;

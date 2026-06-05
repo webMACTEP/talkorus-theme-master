@@ -5356,4 +5356,88 @@
   .projects-page__pagination {
     margin-top: 40px;
   }
+  .contacts-page .entry-header {
+    margin: 20px 0px 0px 0px;
+  }
+  .contacts-page h1 {
+    color: #54595f;
+    font-size: 24px;
+  }
+  .contacts-page .tel {
+    color: #000;
+    font-family: "PT Sans";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.25;
+  }
+  .contacts-page .messgrs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .contacts-page .messgrs a {
+    display: flex;
+    align-items: center;
+  }
+  .contacts-page .messgrs svg,
+  .contacts-page .messgrs img {
+    max-width: 40px;
+    height: auto;
+  }
+  .contacts-page .about-info__content a {
+    color: #a9613d;
+    text-decoration: none;
+  }
+  .contacts-page .about-info__content a:hover {
+    text-decoration: underline;
+  }
+  .contacts-page .about-info {
+    margin: 32px 0px 0px 0px;
+  }
+  .contacts-page .contacts-list {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+    margin: 20px 0px 30px 0px;
+  }
+  .contacts-page .contacts-list__info {
+    margin: 8px 0px 0px 0px;
+    color: #000;
+    font-family: "PT Sans";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.25;
+  }
+  .contacts-page .contacts-list__info span {
+    color: #000;
+    font-family: "PT Sans";
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.3;
+  }
+  .contacts-page .contacts-list__title {
+    color: #000;
+    font-family: "PT Sans";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    opacity: 0.5;
+  }
+  .contacts-page .contacts-list__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+  }
+  .contacts-page .contacts-map iframe {
+    display: block;
+    width: 100% !important;
+    max-width: 100%;
+    height: 410px !important;
+  }
 }/*# sourceMappingURL=mobile.css.map */
