@@ -1794,7 +1794,7 @@
                     line-height: normal;
                     text-decoration: none;
                     margin-top: 0;
-                    min-width: 124px;
+                    min-width: 100px;
                     min-height: 41px;
                 }
             }
@@ -5465,6 +5465,19 @@
             line-height: 1;
             text-transform: uppercase;
         }
+        &__wrapp {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 12px;
+            width: -moz-max-content;
+            width: max-content;
+            min-width: 100%;
+            margin: 0;
+            padding: 0 15px;
+            overflow: visible;
+            list-style: none;
+            border: none;
+        }
 
         &__categories {
             display: flex;
@@ -5498,6 +5511,86 @@
 
         &__pagination {
             margin-top: 40px;
+        }
+    }
+
+    .contacts-page {
+        .tel {
+            color: #000;
+            font-family: "PT Sans";
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+        .messgrs {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            a {
+                display: flex;
+                align-items: center;
+            }
+            svg,
+            img {
+                max-width: 42px;
+                height: auto;
+            }
+        }
+        .about-info__content {
+            a {
+                color: #a9613d;
+                text-decoration: none;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+        .about-info {
+            margin: 40px 0px 0px 0px;
+        }
+        .contacts-list {
+            &__info {
+                margin: 12px 0px 0px 0px;
+                color: #000;
+                font-family: "PT Sans";
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+
+                span {
+                    color: #000;
+                    font-family: "PT Sans";
+                    font-size: 13px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                }
+            }
+            &__title {
+                color: #000;
+                font-family: "PT Sans";
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+
+                opacity: 0.5;
+            }
+            &__item {
+                display: flex;
+                gap: 15px;
+            }
+
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+
+            margin: 22px 0px 50px 0px;
+        }
+        h1 {
+            color: #54595f;
         }
     }
 }

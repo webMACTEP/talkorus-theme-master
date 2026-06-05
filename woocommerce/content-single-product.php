@@ -156,9 +156,8 @@ if (post_password_required()) {
 <?php
 $faq_title = function_exists('get_field') ? get_field('talkorus_faq_title', 'option') : '';
 $has_faq   = function_exists('have_rows') && have_rows('talkorus_faq_items', 'option');
+if ($has_faq) :
 ?>
-
-<?php if ($has_faq) : ?>
 	<section class="site-section about-info faq-pp">
 		<div class="container">
 			<div class="section-divider">

@@ -1531,7 +1531,7 @@
     line-height: normal;
     text-decoration: none;
     margin-top: 0;
-    min-width: 124px;
+    min-width: 100px;
     min-height: 41px;
   }
   .catalog-card-footer {
@@ -4436,6 +4436,19 @@
     line-height: 1;
     text-transform: uppercase;
   }
+  .projects-page__wrapp {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 12px;
+    width: -moz-max-content;
+    width: max-content;
+    min-width: 100%;
+    margin: 0;
+    padding: 0 15px;
+    overflow: visible;
+    list-style: none;
+    border: none;
+  }
   .projects-page__categories {
     display: flex;
     flex-wrap: wrap;
@@ -4461,5 +4474,76 @@
   }
   .projects-page__pagination {
     margin-top: 40px;
+  }
+  .contacts-page .tel {
+    color: #000;
+    font-family: "PT Sans";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+  .contacts-page .messgrs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .contacts-page .messgrs a {
+    display: flex;
+    align-items: center;
+  }
+  .contacts-page .messgrs svg,
+  .contacts-page .messgrs img {
+    max-width: 42px;
+    height: auto;
+  }
+  .contacts-page .about-info__content a {
+    color: #a9613d;
+    text-decoration: none;
+  }
+  .contacts-page .about-info__content a:hover {
+    text-decoration: underline;
+  }
+  .contacts-page .about-info {
+    margin: 40px 0px 0px 0px;
+  }
+  .contacts-page .contacts-list__info {
+    margin: 12px 0px 0px 0px;
+    color: #000;
+    font-family: "PT Sans";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+  .contacts-page .contacts-list__info span {
+    color: #000;
+    font-family: "PT Sans";
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+  .contacts-page .contacts-list__title {
+    color: #000;
+    font-family: "PT Sans";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    opacity: 0.5;
+  }
+  .contacts-page .contacts-list__item {
+    display: flex;
+    gap: 15px;
+  }
+  .contacts-page .contacts-list {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin: 22px 0px 50px 0px;
+  }
+  .contacts-page h1 {
+    color: #54595f;
   }
 }/*# sourceMappingURL=desktop.css.map */

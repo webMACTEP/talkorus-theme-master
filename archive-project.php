@@ -22,15 +22,17 @@ get_header();
 
         <?php if (!empty($project_categories) && !is_wp_error($project_categories)) : ?>
             <div class="projects-page__categories">
-                <a class="projects-page__category active" href="<?php echo esc_url(get_post_type_archive_link('project')); ?>">
-                    Все проекты
-                </a>
-
-                <?php foreach ($project_categories as $category) : ?>
-                    <a class="projects-page__category" href="<?php echo esc_url(get_term_link($category)); ?>">
-                        <?php echo esc_html($category->name); ?>
+                <div class="projects-page__wrapp">
+                    <a class="projects-page__category active" href="<?php echo esc_url(get_post_type_archive_link('project')); ?>">
+                        Все проекты
                     </a>
-                <?php endforeach; ?>
+
+                    <?php foreach ($project_categories as $category) : ?>
+                        <a class="projects-page__category" href="<?php echo esc_url(get_term_link($category)); ?>">
+                            <?php echo esc_html($category->name); ?>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
             </div>
         <?php endif; ?>
 
