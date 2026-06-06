@@ -5394,10 +5394,443 @@
     flex: 1 1 calc(50% - 16px);
     min-width: 280px;
   }
+  .contacts-page .contacts-map {
+    overflow: hidden;
+    border-radius: 20px;
+  }
   .contacts-page .contacts-map iframe {
     display: block;
     width: 100% !important;
     max-width: 100%;
     height: 410px !important;
+    border-radius: 20px;
+  }
+  .delivery-page h1 {
+    color: #54595f;
+  }
+  .delivery-page .delivery-steps {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin: 32px 0px 0px 0px;
+  }
+  .delivery-page .delivery-steps__item {
+    min-height: 260px;
+    padding: 32px 22px 26px 22px;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    background: #fff;
+  }
+  .delivery-page .delivery-steps__number {
+    margin: 0px 0px 28px 0px;
+    color: #a9613d;
+    font-family: "PT Sans";
+    font-size: 76px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 0.9;
+  }
+  .delivery-page .delivery-steps__title {
+    margin: 0px 0px 12px 0px;
+    color: #54595f;
+    font-family: "PT Sans";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .delivery-page .delivery-steps__text {
+    color: #54595f;
+    font-family: "PT Sans";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.35;
+  }
+  .delivery-page .delivery-steps__text p {
+    margin: 0px 0px 10px 0px;
+  }
+  .delivery-page .delivery-steps__text p:last-child {
+    margin-bottom: 0px;
+  }
+  .delivery-page__accordion-section {
+    padding: 0px 0px 60px 0px;
+  }
+  .delivery-page__accordion-section .section-divider {
+    margin-top: 50px;
+  }
+  .delivery-page__accordion-section .about-info__content a {
+    color: #a9613d;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .delivery-page__accordion-section .about-info__content a:hover {
+    text-decoration: underline;
+  }
+  .delivery-page__accordion-section .about-info__content ol,
+  .delivery-page__accordion-section .about-info__content ul {
+    margin: 8px 0px 8px 0px;
+    padding-left: 32px;
+  }
+  .delivery-page__accordion-section .about-info__content ol {
+    list-style: decimal;
+  }
+  .delivery-page__accordion-section .about-info__content ul {
+    list-style: disc;
+  }
+  .delivery-page__accordion-section .about-info__content li {
+    margin: 0px 0px 6px 0px;
+    list-style: inherit;
+  }
+  .delivery-page__accordion-section .about-info__content li::marker {
+    color: currentColor;
+  }
+  .delivery-page__accordion-section .about-info__content li:last-child {
+    margin-bottom: 0px;
+  }
+  .delivery-page__accordion-section .about-info__content li > ul,
+  .delivery-page__accordion-section .about-info__content li > ol {
+    margin-top: 6px;
+    padding-left: 26px;
+  }
+  .delivery-page__accordion-section .about-info__content li > ul {
+    list-style: circle;
+  }
+}
+@media (min-width: 744px) and (max-width: 1439px) {
+  .brand-page {
+    padding: 0px 0px 50px 0px;
+  }
+  .brand-page .entry-header {
+    margin: 28px 0px 0px 0px;
+  }
+  .brand-page h1 {
+    color: #54595f;
+    font-size: 24px;
+    line-height: 1.2;
+  }
+  .brand-page h1 span {
+    color: #a9613d;
+  }
+  .brand-page .entry-content:empty {
+    display: none;
+  }
+  .brand-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: 30px 0px 54px 0px;
+  }
+  .brand-stats__item {
+    min-height: 78px;
+    padding: 0px 18px;
+    border-right: 1px solid #dcdcdc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .brand-stats__item:first-child {
+    padding-left: 0px;
+  }
+  .brand-stats__item:last-child {
+    padding-right: 0px;
+    border-right: 0px;
+  }
+  .brand-stats__value {
+    color: #a9613d;
+    font-family: "PT Sans";
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .brand-stats__label {
+    margin: 10px 0px 0px 0px;
+    color: #242424;
+    font-family: "PT Sans";
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.25;
+  }
+  .brand-intro {
+    margin: 0px 0px 46px 0px;
+  }
+  .brand-intro__title {
+    margin: 0px 0px 24px 0px;
+    color: #54595f;
+    font-family: "PT Sans";
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+  .brand-intro__title span {
+    color: #a9613d;
+  }
+  .brand-intro__main {
+    display: grid;
+    grid-template-columns: 320px minmax(0, 1fr);
+    gap: 28px;
+    align-items: center;
+  }
+  .brand-intro__content {
+    order: 2;
+    color: #54595f;
+    font-family: "PT Sans";
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.35;
+  }
+  .brand-intro__content p {
+    margin: 0px 0px 14px 0px;
+  }
+  .brand-intro__content p:last-child {
+    margin-bottom: 0px;
+  }
+  .brand-intro__media {
+    order: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .brand-intro__media img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    max-height: 380px;
+    object-fit: contain;
+  }
+  .brand-features {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    margin: 28px 0px 0px 0px;
+  }
+  .brand-features__item {
+    min-height: 86px;
+    padding: 0px 14px;
+    border-right: 1px solid #dcdcdc;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .brand-features__item:first-child {
+    padding-left: 0px;
+  }
+  .brand-features__item:last-child {
+    padding-right: 0px;
+    border-right: 0px;
+  }
+  .brand-features__icon {
+    width: 42px;
+    height: 42px;
+    margin: 0px 0px 8px 0px;
+  }
+  .brand-features__icon img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .brand-features__title {
+    color: #333;
+    font-family: "PT Sans";
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .brand-principle .section-divider,
+  .brand-certificates .section-divider {
+    margin: 42px 0px 28px 0px;
+  }
+  .brand-principle__title {
+    margin: 0px 0px 20px 0px;
+    color: #54595f;
+    font-family: "PT Sans";
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+  .brand-principle__title span {
+    color: #a9613d;
+  }
+  .brand-principle__grid {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .brand-principle-card {
+    min-height: 236px;
+    padding: 20px 24px;
+    border: 1px solid #e2e2e2;
+    border-radius: 12px;
+    background: #fff;
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+    gap: 28px;
+    align-items: center;
+  }
+  .brand-principle-card__image {
+    height: 196px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .brand-principle-card__image img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  .brand-principle-card__title {
+    margin: 0px 0px 10px 0px;
+    color: #54595f;
+    font-family: "PT Sans";
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .brand-principle-card__text {
+    color: #54595f;
+    font-family: "PT Sans";
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.35;
+  }
+  .brand-principle-card__text p {
+    margin: 0px 0px 10px 0px;
+  }
+  .brand-principle-card__text p:last-child {
+    margin-bottom: 0px;
+  }
+  .brand-certificates__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .brand-certificates__content {
+    order: 1;
+    width: 100%;
+  }
+  .brand-certificates__slider {
+    order: 2;
+    width: 100%;
+    overflow: hidden;
+    padding: 0px 0px 34px 0px;
+  }
+  .brand-certificates__slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .brand-certificates__slide img {
+    display: block;
+    max-width: 100%;
+    max-height: 310px;
+    object-fit: contain;
+  }
+  .brand-certificates__pagination {
+    bottom: 0px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .brand-certificates .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    margin: 0px !important;
+    background: #54595f;
+    opacity: 1;
+  }
+  .brand-certificates .swiper-pagination-bullet-active {
+    background: #a9613d;
+  }
+  .brand-certificates__title {
+    margin: 0px 0px 14px 0px;
+    color: #54595f;
+    font-family: "PT Sans";
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+  .brand-certificates__title span {
+    color: #a9613d;
+  }
+  .brand-certificates__text {
+    color: #54595f;
+    font-family: "PT Sans";
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.35;
+  }
+  .brand-certificates__text p {
+    margin: 0px 0px 12px 0px;
+  }
+  .brand-certificates__text p:last-child {
+    margin-bottom: 0px;
+  }
+  .brand-cta {
+    margin: 54px 0px 54px 0px;
+  }
+  .brand-cta__inner {
+    min-height: 270px;
+    padding: 48px 28px;
+    border-radius: 18px;
+    background-color: #333;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .brand-cta__title {
+    margin: 0px 0px 14px 0px;
+    color: #fff;
+    font-family: "PT Sans";
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+  .brand-cta__text {
+    color: #fff;
+    font-family: "PT Sans";
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.3;
+  }
+  .brand-cta__text p {
+    margin: 0px;
+  }
+  .brand-cta__links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 24px 0px 0px 0px;
+  }
+  .brand-cta__link {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .brand-cta__link img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .brand-cta__link span {
+    color: #fff;
+    font-size: 11px;
+    line-height: 1;
   }
 }/*# sourceMappingURL=tablet.css.map */

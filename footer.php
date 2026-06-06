@@ -15,18 +15,18 @@ wp_footer(); ?>
                 <h2>О TALKORUS</h2>
                 <nav>
                     <ul>
-                        <li><a href="#">КАТАЛОГ</a></li>
-                        <li><a href="#">ДЛЯ ДОМА</a></li>
-                        <li><a href="#">ДЛЯ БАНИ</a></li>
-                        <li><a href="#">ПЛИТКА И КАМНИ</a></li>
-                        <li><a href="#">ПРОЕКТЫ</a></li>
+                        <li><a href="<?php echo esc_url(home_url('/catalog/')); ?>">КАТАЛОГ</a></li>
+                        <li><a href="<?php echo esc_url(get_term_link('dlya-doma', 'product_cat')); ?>">ДЛЯ ДОМА</a></li>
+                        <li><a href="<?php echo esc_url(get_term_link('dlya-bani', 'product_cat')); ?>">ДЛЯ БАНИ</a></li>
+                        <li><a href="<?php echo esc_url(get_term_link('plitka-i-kamni', 'product_cat')); ?>">ПЛИТКА И КАМНИ</a></li>
+                        <li><a href="<?php echo esc_url(home_url('/projects/')); ?>">ПРОЕКТЫ</a></li>
                         <a href="#" class="site-map">Карта сайта</a>
 
                     </ul>
                     <ul>
-                        <li><a href="#">Контакты</a></li>
-                        <li><a href="#">Оплата и доставка</a></li>
-                        <li><a href="#">Гарантия и возврат</a></li>
+                        <li><a href="<?php echo esc_url(home_url('/kontakty/')); ?>">Контакты</a></li>
+                        <li><a href="<?php echo esc_url(home_url('/usloviya-postavki/')); ?>">Оплата и доставка</a></li>
+                        <li><a href="<?php echo esc_url(home_url('/usloviya-postavki/')); ?>">Гарантия и возврат</a></li>
                         <li class="contacts no-desctop">
                             <a href="tel:8800-201-14-19" class="phone">
                                 <div class="icon">

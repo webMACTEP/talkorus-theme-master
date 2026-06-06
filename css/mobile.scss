@@ -58,7 +58,7 @@
             flex-direction: column;
             min-height: calc(100vh - 80px);
             height: auto;
-            padding-bottom: 40px;
+            padding-bottom: 80px;
         }
         .search-call {
             margin-top: 60px;
@@ -4696,6 +4696,396 @@
     }
 }
 
+@media (max-width: 743px) {
+    .brand-page {
+        padding: 0px 0px 40px 0px;
+
+        .entry-header {
+            margin: 20px 0px 0px 0px;
+        }
+
+        h1 {
+            color: #54595f;
+            font-size: 20px;
+            line-height: 1.2;
+
+            span {
+                color: #a9613d;
+            }
+        }
+
+        .entry-content:empty {
+            display: none;
+        }
+    }
+
+    .brand-stats {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        row-gap: 24px;
+        margin: 22px 0px 42px 0px;
+
+        &__item {
+            min-height: 80px;
+            padding: 0px 14px;
+            border-right: 1px solid #dcdcdc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+
+            &:nth-child(2n) {
+                border-right: 0px;
+            }
+        }
+
+        &__value {
+            color: #a9613d;
+            font-family: "PT Sans";
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        &__label {
+            margin: 9px 0px 0px 0px;
+            color: #242424;
+            font-family: "PT Sans";
+            font-size: 11px;
+            font-weight: 400;
+            line-height: 1.25;
+        }
+    }
+
+    .brand-intro {
+        margin: 0px 0px 36px 0px;
+
+        &__title {
+            margin: 0px 0px 18px 0px;
+            color: #54595f;
+            font-family: "PT Sans";
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.2;
+            text-transform: uppercase;
+
+            span {
+                color: #a9613d;
+            }
+        }
+
+        &__main {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        &__content {
+            order: 2;
+            color: #54595f;
+            font-family: "PT Sans";
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.35;
+
+            p {
+                margin: 0px 0px 12px 0px;
+
+                &:last-child {
+                    margin-bottom: 0px;
+                }
+            }
+        }
+
+        &__media {
+            order: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                display: block;
+                width: auto;
+                max-width: 100%;
+                max-height: 360px;
+                object-fit: contain;
+            }
+        }
+    }
+
+    .brand-features {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px 0px;
+        margin: 26px 0px 0px 0px;
+
+        &__item {
+            min-height: 82px;
+            padding: 0px 18px;
+            border-right: 1px solid #dcdcdc;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+
+            &:nth-child(2n) {
+                border-right: 0px;
+            }
+        }
+
+        &__icon {
+            width: 40px;
+            height: 40px;
+            margin: 0px 0px 8px 0px;
+
+            img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+        }
+
+        &__title {
+            color: #333;
+            font-family: "PT Sans";
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+    }
+
+    .brand-principle,
+    .brand-certificates {
+        .section-divider {
+            margin: 36px 0px 24px 0px;
+        }
+    }
+
+    .brand-principle {
+        &__title {
+            margin: 0px 0px 18px 0px;
+            color: #54595f;
+            font-family: "PT Sans";
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.2;
+            text-transform: uppercase;
+
+            span {
+                color: #a9613d;
+            }
+        }
+
+        &__grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+    }
+
+    .brand-principle-card {
+        padding: 18px;
+        border: 1px solid #e2e2e2;
+        border-radius: 12px;
+        background: #fff;
+
+        &__image {
+            height: 250px;
+            margin: 0px 0px 14px 0px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                display: block;
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+        }
+
+        &__title {
+            margin: 0px 0px 9px 0px;
+            color: #54595f;
+            font-family: "PT Sans";
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        &__text {
+            color: #54595f;
+            font-family: "PT Sans";
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.35;
+
+            p {
+                margin: 0px 0px 9px 0px;
+
+                &:last-child {
+                    margin-bottom: 0px;
+                }
+            }
+        }
+    }
+
+    .brand-certificates {
+        &__inner {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        &__content {
+            order: 1;
+            width: 100%;
+        }
+
+        &__slider {
+            order: 2;
+            width: 100%;
+            overflow: hidden;
+            padding: 0px 0px 32px 0px;
+        }
+
+        &__slide {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                display: block;
+                max-width: 100%;
+                max-height: 330px;
+                object-fit: contain;
+            }
+        }
+
+        &__pagination {
+            bottom: 0px !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .swiper-pagination-bullet {
+            width: 10px;
+            height: 10px;
+            margin: 0px !important;
+            background: #54595f;
+            opacity: 1;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: #a9613d;
+        }
+
+        &__title {
+            margin: 0px 0px 12px 0px;
+            color: #54595f;
+            font-family: "PT Sans";
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.2;
+            text-transform: uppercase;
+
+            span {
+                color: #a9613d;
+            }
+        }
+
+        &__text {
+            color: #54595f;
+            font-family: "PT Sans";
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.35;
+
+            p {
+                margin: 0px 0px 10px 0px;
+
+                &:last-child {
+                    margin-bottom: 0px;
+                }
+            }
+        }
+    }
+
+    .brand-cta {
+        margin: 42px 0px 42px 0px;
+
+        &__inner {
+            min-height: 220px;
+            padding: 34px 20px;
+            border-radius: 12px;
+            background-color: #333;
+            background-position: center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        &__title {
+            margin: 0px 0px 12px 0px;
+            color: #fff;
+            font-family: "PT Sans";
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        &__text {
+            color: #fff;
+            font-family: "PT Sans";
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 1.3;
+
+            p {
+                margin: 0px;
+            }
+        }
+
+        &__links {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 22px 0px 0px 0px;
+        }
+
+        &__link {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+
+            span {
+                color: #fff;
+                font-size: 10px;
+                line-height: 1;
+            }
+        }
+    }
+}
+
 /* =========================================================
    CART PAGE — TABLET
    744px - 1439px
@@ -6775,11 +7165,135 @@
         }
 
         .contacts-map {
+            overflow: hidden;
+            border-radius: 20px;
+
             iframe {
                 display: block;
                 width: 100% !important;
                 max-width: 100%;
                 height: 410px !important;
+                border-radius: 20px;
+            }
+        }
+    }
+
+    .delivery-page {
+        .entry-header {
+            margin: 20px 0px 0px 0px;
+        }
+
+        h1 {
+            color: #54595f;
+            font-size: 24px;
+            line-height: 1.1;
+        }
+
+        .delivery-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin: 24px 0px 0px 0px;
+
+            &__item {
+                padding: 24px 20px 24px 20px;
+                border: 1px solid #e0e0e0;
+                border-radius: 20px;
+                background: #fff;
+            }
+
+            &__number {
+                margin: 0px 0px 22px 0px;
+                color: #a9613d;
+                font-family: "PT Sans";
+                font-size: 56px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 0.95;
+            }
+
+            &__title {
+                margin: 0px 0px 10px 0px;
+                color: #54595f;
+                font-family: "PT Sans";
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 1.2;
+            }
+
+            &__text {
+                color: #54595f;
+                font-family: "PT Sans";
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 1.35;
+
+                p {
+                    margin: 0px 0px 10px 0px;
+
+                    &:last-child {
+                        margin-bottom: 0px;
+                    }
+                }
+            }
+        }
+
+        &__accordion-section {
+            padding: 0px 0px 50px 0px;
+
+            .section-divider {
+                margin: 40px 0px 20px 0px;
+            }
+
+            .about-info__content {
+                a {
+                    color: #a9613d;
+                    font-weight: 700;
+                    text-decoration: none;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+
+                ol,
+                ul {
+                    margin: 8px 0px 8px 0px;
+                    padding-left: 24px;
+                }
+
+                ol {
+                    list-style: decimal;
+                }
+
+                ul {
+                    list-style: disc;
+                }
+
+                li {
+                    margin: 0px 0px 6px 0px;
+                    list-style: inherit;
+                }
+
+                li::marker {
+                    color: currentColor;
+                }
+
+                li:last-child {
+                    margin-bottom: 0px;
+                }
+
+                li > ul,
+                li > ol {
+                    margin-top: 6px;
+                    padding-left: 22px;
+                }
+
+                li > ul {
+                    list-style: circle;
+                }
             }
         }
     }

@@ -1,24 +1,64 @@
 jQuery(document).ready(function ($) {
+  function talkorusScrollToAccordionItem($item) {
+    const $target = $item.find(".about-info__head").first();
+
+    if (!$target.length) {
+      return;
+    }
+
+    const header = document.querySelector("header");
+    const headerHeight = header ? header.offsetHeight : 0;
+
+    const extraOffset = 16;
+
+    const targetTop =
+      $target[0].getBoundingClientRect().top +
+      window.pageYOffset -
+      headerHeight -
+      extraOffset;
+
+    window.scrollTo({
+      top: Math.max(0, targetTop),
+      behavior: "smooth",
+    });
+  }
+
+  function talkorusShouldScrollAccordionOnMobile($item) {
+    return (
+      window.matchMedia("(max-width: 1743px)").matches &&
+      $item.closest(".about-info__accordion").length
+    );
+  }
+
   $(".about-info__item.active .about-info__body").each(function () {
     $(this).css("max-height", this.scrollHeight + "px");
   });
 
   $(".about-info__head").on("click", function () {
     const $item = $(this).closest(".about-info__item");
-    const $body = $item.find(".about-info__body");
+    const $body = $item.find(".about-info__body").first();
     const isActive = $item.hasClass("active");
 
     if (isActive) {
       $body.css("max-height", 0);
       $item.removeClass("active");
-    } else {
-      $(".about-info__item.active").each(function () {
+      return;
+    }
+
+    $(".about-info__item.active")
+      .not($item)
+      .each(function () {
         $(this).removeClass("active");
         $(this).find(".about-info__body").css("max-height", 0);
       });
 
-      $item.addClass("active");
-      $body.css("max-height", $body[0].scrollHeight + "px");
+    $item.addClass("active");
+    $body.css("max-height", $body[0].scrollHeight + "px");
+
+    if (talkorusShouldScrollAccordionOnMobile($item)) {
+      setTimeout(function () {
+        talkorusScrollToAccordionItem($item);
+      }, 320);
     }
   });
 
@@ -104,6 +144,32 @@ jQuery(document).ready(function ($) {
         },
       });
     }
+  });
+
+  $(".brand-certificates__slider").each(function () {
+    const pagination = $(this).find(".brand-certificates__pagination")[0];
+
+    new Swiper(this, {
+      loop: false,
+      speed: 600,
+      watchOverflow: true,
+      slidesPerView: 1,
+      spaceBetween: 16,
+      pagination: {
+        el: pagination,
+        clickable: true,
+      },
+      breakpoints: {
+        744: {
+          slidesPerView: 3,
+          spaceBetween: 24,
+        },
+        1440: {
+          slidesPerView: 2,
+          spaceBetween: 24,
+        },
+      },
+    });
   });
 });
 
