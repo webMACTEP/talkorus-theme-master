@@ -27,6 +27,8 @@ wp_footer(); ?>
                         <li><a href="<?php echo esc_url(home_url('/kontakty/')); ?>">Контакты</a></li>
                         <li><a href="<?php echo esc_url(home_url('/usloviya-postavki/')); ?>">Оплата и доставка</a></li>
                         <li><a href="<?php echo esc_url(home_url('/usloviya-postavki/')); ?>">Гарантия и возврат</a></li>
+                        <li><a href="<?php echo esc_url(home_url('/firmennye-pechi-kaminy-talkorus/')); ?>">Talkorus</a></li>
+                        <li><a href="<?php echo esc_url(home_url('/nastoyashhie-pechi-dlya-russkoj-bani-talkorus-onego/')); ?>">Talkorus ОНЕГО</a></li>
                         <li class="contacts no-desctop">
                             <a href="tel:8800-201-14-19" class="phone">
                                 <div class="icon">

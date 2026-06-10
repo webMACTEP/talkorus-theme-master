@@ -148,6 +148,38 @@ jQuery(document).ready(function ($) {
 
   $(".brand-certificates__slider").each(function () {
     const pagination = $(this).find(".brand-certificates__pagination")[0];
+    const nextBtn = $(this).find(".brand-certificates__nav--next")[0];
+    const prevBtn = $(this).find(".brand-certificates__nav--prev")[0];
+
+    new Swiper(this, {
+      loop: false,
+      speed: 600,
+      watchOverflow: true,
+      slidesPerView: 1,
+      spaceBetween: 16,
+      pagination: {
+        el: pagination,
+        clickable: true,
+      },
+      navigation: {
+        nextEl: nextBtn,
+        prevEl: prevBtn,
+      },
+      breakpoints: {
+        744: {
+          slidesPerView: 3,
+          spaceBetween: 24,
+        },
+        1440: {
+          slidesPerView: 2,
+          spaceBetween: 24,
+        },
+      },
+    });
+  });
+
+  $(".onego-reasons__slider").each(function () {
+    const pagination = $(this).find(".onego-reasons__pagination")[0];
 
     new Swiper(this, {
       loop: false,
@@ -161,12 +193,60 @@ jQuery(document).ready(function ($) {
       },
       breakpoints: {
         744: {
-          slidesPerView: 3,
-          spaceBetween: 24,
+          slidesPerView: 2,
+          spaceBetween: 18,
         },
         1440: {
+          slidesPerView: 4,
+          spaceBetween: 18,
+        },
+      },
+    });
+  });
+
+  $(".onego-model__slider").each(function () {
+    const pagination = $(this).find(".onego-model__pagination")[0];
+
+    new Swiper(this, {
+      loop: false,
+      speed: 600,
+      watchOverflow: true,
+      slidesPerView: 1,
+      spaceBetween: 16,
+      pagination: {
+        el: pagination,
+        clickable: true,
+      },
+      breakpoints: {
+        744: {
           slidesPerView: 2,
-          spaceBetween: 24,
+          spaceBetween: 18,
+        },
+      },
+    });
+  });
+
+  $(".onego-textures__slider").each(function () {
+    const pagination = $(this).find(".onego-textures__pagination")[0];
+
+    new Swiper(this, {
+      loop: false,
+      speed: 600,
+      watchOverflow: true,
+      slidesPerView: 1,
+      spaceBetween: 16,
+      pagination: {
+        el: pagination,
+        clickable: true,
+      },
+      breakpoints: {
+        744: {
+          slidesPerView: 2,
+          spaceBetween: 18,
+        },
+        1440: {
+          slidesPerView: 4,
+          spaceBetween: 18,
         },
       },
     });

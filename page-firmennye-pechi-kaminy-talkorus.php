@@ -248,6 +248,9 @@ while (have_posts()) :
 								<?php endwhile; ?>
 							</div>
 
+							<button class="brand-certificates__nav brand-certificates__nav--prev" type="button" aria-label="Предыдущий сертификат"></button>
+							<button class="brand-certificates__nav brand-certificates__nav--next" type="button" aria-label="Следующий сертификат"></button>
+
 							<div class="brand-certificates__pagination swiper-pagination"></div>
 						</div>
 

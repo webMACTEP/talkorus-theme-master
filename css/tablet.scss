@@ -4646,6 +4646,502 @@
 }
 
 @media (min-width: 744px) and (max-width: 1439px) {
+    .onego-page h1 span {
+        color: #a9613d;
+    }
+
+    .onego-stats {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        margin: 30px 0px 46px 0px;
+
+        &__item {
+            min-height: 76px;
+            padding: 0px 12px;
+            border-right: 1px solid #dcdcdc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+
+            &:last-child {
+                border-right: 0px;
+            }
+        }
+
+        &__value {
+            color: #a9613d;
+            font-family: "PT Sans";
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        &__label {
+            margin: 9px 0px 0px 0px;
+            color: #242424;
+            font-family: "PT Sans";
+            font-size: 10px;
+            font-weight: 400;
+            line-height: 1.25;
+        }
+    }
+
+    .onego-intro {
+        margin: 0px 0px 42px 0px;
+
+        &__title {
+            margin: 0px 0px 20px 0px;
+            color: #54595f;
+            font-family: "PT Sans";
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.2;
+            text-transform: uppercase;
+            text-align: left;
+
+            span {
+                color: #a9613d;
+            }
+        }
+
+        &__main {
+            display: grid;
+            grid-template-columns: 310px minmax(0, 1fr);
+            gap: 28px;
+            align-items: center;
+        }
+
+        &__content {
+            order: 2;
+            color: #54595f;
+            font-family: "PT Sans";
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 1.35;
+
+            p {
+                margin: 0px 0px 12px 0px;
+
+                &:last-child {
+                    margin-bottom: 0px;
+                }
+            }
+
+            ul,
+            ol {
+                margin: 0px;
+                padding-left: 18px;
+            }
+
+            li {
+                margin: 0px 0px 8px 0px;
+            }
+        }
+
+        &__media {
+            order: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                display: block;
+                width: auto;
+                max-width: 100%;
+                max-height: 330px;
+                object-fit: contain;
+            }
+        }
+    }
+
+    .onego-features {
+        margin-top: 28px;
+    }
+
+    .onego-section {
+        .section-divider {
+            margin: 42px 0px 28px 0px;
+        }
+
+        &__title {
+            margin: 0px 0px 18px 0px;
+            color: #54595f;
+            font-family: "PT Sans";
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.2;
+            text-transform: uppercase;
+
+            span {
+                color: #a9613d;
+            }
+        }
+
+        &__subtitle {
+            margin: -10px 0px 16px 0px;
+            color: #54595f;
+            font-family: "PT Sans";
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+    }
+
+    .onego-videos {
+        &__grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        &__card {
+            position: relative;
+            aspect-ratio: 1.85 / 1;
+            border: 0px;
+            border-radius: 12px;
+            padding: 0px;
+            background: #e9e9e9;
+            overflow: hidden;
+            cursor: pointer;
+
+            img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        &__label {
+            position: absolute;
+            left: 14px;
+            bottom: 12px;
+            max-width: calc(100% - 28px);
+            color: #fff;
+            font-family: "PT Sans";
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.2;
+            text-align: left;
+            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
+        }
+    }
+
+    .onego-story {
+        &__inner {
+            display: grid;
+            grid-template-columns: 300px minmax(0, 1fr);
+            gap: 28px;
+            align-items: center;
+        }
+
+        &__images {
+            display: grid;
+            grid-template-columns: minmax(0, 0.58fr) minmax(0, 1.42fr);
+            grid-template-rows: repeat(2, minmax(0, 1fr));
+            grid-template-areas:
+                "image-top image-main"
+                "image-bottom image-main";
+            gap: 10px;
+            aspect-ratio: 1.38 / 1;
+        }
+
+        &__image {
+            min-width: 0px;
+            min-height: 0px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #f2f2f2;
+
+            &:nth-child(1) {
+                grid-area: image-top;
+            }
+
+            &:nth-child(2) {
+                grid-area: image-main;
+            }
+
+            &:nth-child(3) {
+                grid-area: image-bottom;
+            }
+
+            &:nth-child(n + 4) {
+                display: none;
+            }
+
+            img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        &__text {
+            color: #54595f;
+            font-family: "PT Sans";
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 1.35;
+
+            p {
+                margin: 0px 0px 12px 0px;
+
+                &:last-child {
+                    margin-bottom: 0px;
+                }
+            }
+        }
+    }
+
+    .onego-reasons__slider,
+    .onego-model__slider,
+    .onego-textures__slider {
+        width: 100%;
+        overflow: hidden;
+        padding: 0px 0px 34px 0px;
+    }
+
+    .onego-reasons__slider {
+        padding: 0px;
+    }
+
+    .onego-reason-card {
+        min-height: 300px;
+        padding: 24px 16px 20px 16px;
+        border: 1px solid #e2e2e2;
+        border-radius: 12px;
+        background: #fff;
+
+        &__number {
+            margin: 0px 0px 18px 0px;
+            color: #a9613d;
+            font-family: "PT Sans";
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 0.9;
+        }
+
+        &__title {
+            margin: 0px 0px 9px 0px;
+            color: #54595f;
+            font-family: "PT Sans";
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        &__text {
+            color: #54595f;
+            font-family: "PT Sans";
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.35;
+
+            p {
+                margin: 0px 0px 8px 0px;
+
+                &:last-child {
+                    margin-bottom: 0px;
+                }
+            }
+        }
+    }
+
+    .onego-principle__grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px 18px;
+    }
+
+    .onego-principle__item {
+        margin: 0px;
+
+        img {
+            display: block;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        figcaption {
+            margin: 8px 0px 0px 0px;
+            color: #54595f;
+            font-size: 12px;
+            line-height: 1.25;
+        }
+    }
+
+    .onego-certificates .section-divider {
+        margin: 42px 0px 28px 0px;
+    }
+
+    .onego-models__list {
+        display: flex;
+        flex-direction: column;
+        gap: 44px;
+    }
+
+    .onego-model {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 28px;
+        align-items: center;
+
+        &--reverse {
+            .onego-model__content {
+                order: 2;
+            }
+
+            .onego-model__slider {
+                order: 1;
+            }
+        }
+
+        &__title {
+            margin: 0px 0px 8px 0px;
+            color: #54595f;
+            font-family: "PT Sans";
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.2;
+            text-transform: uppercase;
+
+            span {
+                color: #a9613d;
+            }
+        }
+
+        &__subtitle {
+            margin: 0px 0px 14px 0px;
+            color: #54595f;
+            font-family: "PT Sans";
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        &__text {
+            color: #54595f;
+            font-family: "PT Sans";
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.35;
+
+            p {
+                margin: 0px 0px 10px 0px;
+
+                &:last-child {
+                    margin-bottom: 0px;
+                }
+            }
+
+            ul,
+            ol {
+                margin: 8px 0px 0px 0px;
+                padding-left: 18px;
+            }
+
+            li {
+                margin: 0px 0px 5px 0px;
+            }
+        }
+
+        &__slide {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                display: block;
+                max-width: 100%;
+                max-height: 310px;
+                object-fit: contain;
+            }
+        }
+    }
+
+    .onego-texture-card {
+        height: 100%;
+        border: 1px solid #e2e2e2;
+        border-radius: 12px;
+        background: #fff;
+        overflow: hidden;
+
+        &__image img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 1.25 / 1;
+            object-fit: cover;
+        }
+
+        &__title {
+            margin: 16px 14px 9px 14px;
+            color: #54595f;
+            font-family: "PT Sans";
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        &__text {
+            padding: 0px 14px 16px 14px;
+            color: #54595f;
+            font-family: "PT Sans";
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.35;
+
+            p {
+                margin: 0px 0px 8px 0px;
+
+                &:last-child {
+                    margin-bottom: 0px;
+                }
+            }
+        }
+    }
+
+    .onego-reasons,
+    .onego-model,
+    .onego-textures {
+        .swiper-pagination {
+            bottom: 0px !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .swiper-pagination-bullet {
+            width: 10px;
+            height: 10px;
+            margin: 0px !important;
+            background: #54595f;
+            opacity: 1;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: #a9613d;
+        }
+    }
+
+    .onego-reasons {
+        .onego-reasons__pagination.swiper-pagination {
+            position: static;
+            width: auto;
+            margin: 20px 0px 0px 0px;
+            transform: none;
+        }
+    }
+}
+
+@media (min-width: 744px) and (max-width: 1439px) {
     .brand-page {
         padding: 0px 0px 50px 0px;
 
@@ -4907,10 +5403,11 @@
         }
 
         &__slider {
+            position: relative;
             order: 2;
             width: 100%;
             overflow: hidden;
-            padding: 0px 0px 34px 0px;
+            padding: 0px 42px 34px 42px;
         }
 
         &__slide {
@@ -4932,6 +5429,48 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+        }
+
+        &__nav {
+            position: absolute;
+            top: calc(50% - 17px);
+            z-index: 3;
+            width: 16px;
+            height: 29px;
+            padding: 0px;
+            border: 0px;
+            border-radius: 0px;
+            background: #a9613d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transform: translateY(-50%);
+            transition: 0.2s ease;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='29' viewBox='0 0 16 29' fill='none'%3E%3Cpath d='M15.7501 14.4374C15.7501 14.7731 15.6218 15.1091 15.3655 15.3654L2.24052 28.4904C1.72766 29.0032 0.897176 29.0032 0.384645 28.4904C-0.127887 27.9775 -0.128215 27.147 0.384645 26.6345L12.5817 14.4374L0.384647 2.24036C-0.128213 1.7275 -0.128213 0.897011 0.384647 0.38448C0.897506 -0.128052 1.72799 -0.12838 2.24052 0.38448L15.3655 13.5095C15.6218 13.7657 15.7501 14.1017 15.7501 14.4374Z' fill='%23A9613D'/%3E%3C/svg%3E") center / contain no-repeat;
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='29' viewBox='0 0 16 29' fill='none'%3E%3Cpath d='M15.7501 14.4374C15.7501 14.7731 15.6218 15.1091 15.3655 15.3654L2.24052 28.4904C1.72766 29.0032 0.897176 29.0032 0.384645 28.4904C-0.127887 27.9775 -0.128215 27.147 0.384645 26.6345L12.5817 14.4374L0.384647 2.24036C-0.128213 1.7275 -0.128213 0.897011 0.384647 0.38448C0.897506 -0.128052 1.72799 -0.12838 2.24052 0.38448L15.3655 13.5095C15.6218 13.7657 15.7501 14.1017 15.7501 14.4374Z' fill='%23A9613D'/%3E%3C/svg%3E") center / contain no-repeat;
+
+            &::before {
+                content: none;
+            }
+
+            &:hover {
+                opacity: 0.75;
+            }
+
+            &.swiper-button-disabled {
+                opacity: 0.35;
+                pointer-events: none;
+            }
+        }
+
+        &__nav--prev {
+            left: 0px;
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        &__nav--next {
+            right: 0px;
         }
 
         .swiper-pagination-bullet {
