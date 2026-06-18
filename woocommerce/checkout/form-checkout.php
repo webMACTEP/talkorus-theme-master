@@ -66,7 +66,7 @@ remove_action('woocommerce_checkout_order_review', 'woocommerce_order_review', 1
 					$product_permalink = $_product->is_visible() ? $_product->get_permalink($cart_item) : '';
 					$product_sku       = $_product->get_sku();
 					$thumbnail         = $_product->get_image('woocommerce_thumbnail');
-					$subtotal          = WC()->cart->get_product_subtotal($_product, $cart_item['quantity']);
+					$subtotal          = apply_filters('woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal($_product, $cart_item['quantity']), $cart_item, $cart_item_key);
 					?>
 
 					<div class="checkout-order-card">

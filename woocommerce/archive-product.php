@@ -53,6 +53,10 @@ get_header('shop');
 
 				<?php echo do_shortcode('[br_filter_single filter_id=113]'); //Площадь обогрева 
 				?>
+				<?php echo do_shortcode('[br_filter_single filter_id=581]'); //Мощность (кВт)
+				?>
+				<?php echo do_shortcode('[br_filter_single filter_id=583]'); //Объем обогрева (м³)
+                ?>
 				<?php echo do_shortcode('[br_filter_single filter_id=116]'); //Стиль 
 				?>
 				<?php echo do_shortcode('[br_filter_single filter_id=117]'); //Возможность готовить 

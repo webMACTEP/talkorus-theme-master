@@ -82,6 +82,7 @@ jQuery(document).ready(function ($) {
   const $burger = $(".burger");
   const $burgerMenu = $(".burger-menu");
   const $body = $("body");
+  const $callbackModal = $(".callback-modal");
 
   $burger.on("click", function (e) {
     e.stopPropagation();
@@ -103,6 +104,104 @@ jQuery(document).ready(function ($) {
       $burger.removeClass("active");
       $burgerMenu.removeClass("active");
       $body.removeClass("hold");
+    }
+  });
+
+  function talkorusOpenCallbackModal() {
+    if (!$callbackModal.length) {
+      return;
+    }
+
+    $burger.removeClass("active");
+    $burgerMenu.removeClass("active");
+    $body.removeClass("hold");
+
+    $callbackModal.addClass("active").attr("aria-hidden", "false");
+    $body.addClass("callback-modal-open");
+
+    setTimeout(function () {
+      const $firstField = $callbackModal
+        .find(".talkorus-cf7-form__input")
+        .filter(":visible")
+        .first();
+
+      ($firstField.length ? $firstField : $callbackModal.find(".callback-modal__close"))
+        .first()
+        .trigger("focus");
+    }, 100);
+  }
+
+  function talkorusCloseCallbackModal() {
+    if (!$callbackModal.length) {
+      return;
+    }
+
+    $callbackModal.removeClass("active").attr("aria-hidden", "true");
+    $body.removeClass("callback-modal-open");
+  }
+
+  $(".call-back").on("click", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    talkorusOpenCallbackModal();
+  });
+
+  $(".callback-modal [data-callback-modal-close]").on("click", function (e) {
+    e.preventDefault();
+    talkorusCloseCallbackModal();
+  });
+
+  $callbackModal.on("click", ".callback-modal__content", function (e) {
+    e.stopPropagation();
+  });
+
+  function talkorusCloseMenuDropdowns($scope) {
+    const $items = $scope
+      ? $scope
+          .filter(".main-menu__item--has-dropdown.is-open")
+          .add($scope.find(".main-menu__item--has-dropdown.is-open"))
+      : $(".main-menu__item--has-dropdown.is-open");
+
+    $items
+      .removeClass("is-open")
+      .children(".main-menu__toggle")
+      .attr("aria-expanded", "false");
+  }
+
+  $(".main-menu__toggle").on("click", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const $button = $(this);
+    const $item = $button.closest(".main-menu__item--has-dropdown");
+    const isOpen = $item.hasClass("is-open");
+
+    talkorusCloseMenuDropdowns(
+      $item.siblings(".main-menu__item--has-dropdown.is-open")
+    );
+
+    if (isOpen) {
+      talkorusCloseMenuDropdowns($item);
+    } else {
+      $item.addClass("is-open");
+      $button.attr("aria-expanded", "true");
+    }
+  });
+
+  $(".main-menu__dropdown").on("click", function (e) {
+    e.stopPropagation();
+  });
+
+  $(document).on("click", function (e) {
+    if (!$(e.target).closest(".main-menu__item--has-dropdown").length) {
+      talkorusCloseMenuDropdowns();
+    }
+  });
+
+  $(document).on("keydown", function (e) {
+    if (e.key === "Escape") {
+      talkorusCloseMenuDropdowns();
+      talkorusCloseCallbackModal();
     }
   });
 

@@ -68,23 +68,72 @@ function sp_widgets_init()
 }
 add_action('widgets_init', 'sp_widgets_init');
 
-//Enqueue scripts and styles.
+// Enqueue scripts and styles.
 function sp_scripts()
 {
-	wp_enqueue_style('cms-style', get_stylesheet_uri());
-	wp_enqueue_style('styles', get_template_directory_uri() . '/css/style.css');
-	wp_enqueue_style('desktop', get_template_directory_uri() . '/css/desktop.css');
-	wp_enqueue_style('tablet', get_template_directory_uri() . '/css/tablet.css');
-	wp_enqueue_style('mobile', get_template_directory_uri() . '/css/mobile.css');
-	wp_enqueue_style('swiper-style', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css');
+	$theme_dir = get_template_directory();
+	$theme_uri = get_template_directory_uri();
+
+	wp_enqueue_style(
+		'cms-style',
+		get_stylesheet_uri(),
+		array(),
+		filemtime(get_stylesheet_directory() . '/style.css')
+	);
+
+	wp_enqueue_style(
+		'styles',
+		$theme_uri . '/css/style.css',
+		array(),
+		filemtime($theme_dir . '/css/style.css')
+	);
+
+	wp_enqueue_style(
+		'desktop',
+		$theme_uri . '/css/desktop.css',
+		array('styles'),
+		filemtime($theme_dir . '/css/desktop.css'),
+		'(min-width: 1440px)'
+	);
+
+	wp_enqueue_style(
+		'tablet',
+		$theme_uri . '/css/tablet.css',
+		array('styles'),
+		filemtime($theme_dir . '/css/tablet.css'),
+		'(min-width: 744px) and (max-width: 1439px)'
+	);
+
+	wp_enqueue_style(
+		'mobile',
+		$theme_uri . '/css/mobile.css',
+		array('styles'),
+		filemtime($theme_dir . '/css/mobile.css'),
+		'(max-width: 743px)'
+	);
+
+	wp_enqueue_style(
+		'swiper-style',
+		'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css',
+		array(),
+		'11.0.0'
+	);
 
 	wp_enqueue_script('jquery');
-	wp_enqueue_script('swiper', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array(), '11.0.0', true);
+
+	wp_enqueue_script(
+		'swiper',
+		'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js',
+		array(),
+		'11.0.0',
+		true
+	);
+
 	wp_enqueue_script(
 		'script',
-		get_template_directory_uri() . '/js/main.js',
+		$theme_uri . '/js/main.js',
 		array('jquery', 'swiper'),
-		null,
+		filemtime($theme_dir . '/js/main.js'),
 		true
 	);
 
@@ -343,6 +392,370 @@ function talkorus_price_on_request($price)
 	return '<span class="price-on-request">Цена по запросу</span>';
 }
 
+function talkorus_product_has_empty_price($product)
+{
+	if (!is_a($product, 'WC_Product')) {
+		return false;
+	}
+
+	if ($product->is_type('variable')) {
+		$variation_prices = $product->get_variation_prices(false);
+
+		if (empty($variation_prices['price'])) {
+			return true;
+		}
+
+		foreach ($variation_prices['price'] as $price) {
+			if ($price !== '') {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	return $product->get_price('edit') === '';
+}
+
+add_filter('woocommerce_is_purchasable', 'talkorus_allow_empty_price_products_purchase', 10, 2);
+
+function talkorus_allow_empty_price_products_purchase($purchasable, $product)
+{
+	if ($purchasable || !is_a($product, 'WC_Product')) {
+		return $purchasable;
+	}
+
+	if ($product->is_type(array('external', 'grouped'))) {
+		return $purchasable;
+	}
+
+	return talkorus_product_has_empty_price($product) ? true : $purchasable;
+}
+
+add_filter('woocommerce_add_cart_item_data', 'talkorus_mark_empty_price_cart_item', 10, 4);
+
+function talkorus_mark_empty_price_cart_item($cart_item_data, $product_id, $variation_id, $quantity)
+{
+	$product = wc_get_product($variation_id ? $variation_id : $product_id);
+
+	if (talkorus_product_has_empty_price($product)) {
+		$cart_item_data['talkorus_price_on_request'] = true;
+	} else {
+		unset($cart_item_data['talkorus_price_on_request']);
+	}
+
+	return $cart_item_data;
+}
+
+add_filter('woocommerce_get_cart_item_from_session', 'talkorus_restore_empty_price_cart_item_flag', 10, 2);
+
+function talkorus_restore_empty_price_cart_item_flag($cart_item, $values)
+{
+	if (!empty($values['talkorus_price_on_request'])) {
+		$cart_item['talkorus_price_on_request'] = true;
+		return $cart_item;
+	}
+
+	if (!empty($cart_item['data']) && talkorus_product_has_empty_price($cart_item['data'])) {
+		$cart_item['talkorus_price_on_request'] = true;
+	}
+
+	return $cart_item;
+}
+
+function talkorus_cart_item_is_price_on_request($cart_item)
+{
+	if (!empty($cart_item['talkorus_price_on_request'])) {
+		return true;
+	}
+
+	return !empty($cart_item['data']) && talkorus_product_has_empty_price($cart_item['data']);
+}
+
+add_action('woocommerce_before_calculate_totals', 'talkorus_set_empty_price_cart_items_to_zero');
+
+function talkorus_set_empty_price_cart_items_to_zero($cart)
+{
+	if (is_admin() && !wp_doing_ajax()) {
+		return;
+	}
+
+	if (!$cart || $cart->is_empty()) {
+		return;
+	}
+
+	foreach ($cart->get_cart() as $cart_item_key => $cart_item) {
+		if (!talkorus_cart_item_is_price_on_request($cart_item) || empty($cart_item['data'])) {
+			continue;
+		}
+
+		$cart->cart_contents[$cart_item_key]['talkorus_price_on_request'] = true;
+		$cart_item['data']->set_price(0);
+	}
+}
+
+add_filter('woocommerce_cart_item_price', 'talkorus_cart_item_price_on_request_html', 10, 3);
+add_filter('woocommerce_cart_item_subtotal', 'talkorus_cart_item_price_on_request_html', 10, 3);
+
+function talkorus_cart_item_price_on_request_html($price_html, $cart_item, $cart_item_key)
+{
+	if (talkorus_cart_item_is_price_on_request($cart_item)) {
+		return talkorus_price_on_request('');
+	}
+
+	return $price_html;
+}
+
+add_action('woocommerce_checkout_create_order_line_item', 'talkorus_mark_order_item_price_on_request', 10, 4);
+
+function talkorus_mark_order_item_price_on_request($item, $cart_item_key, $values, $order)
+{
+	if (talkorus_cart_item_is_price_on_request($values)) {
+		$item->add_meta_data('_talkorus_price_on_request', 'yes', true);
+	}
+}
+
+add_filter('woocommerce_order_formatted_line_subtotal', 'talkorus_order_item_price_on_request_html', 10, 3);
+
+function talkorus_order_item_price_on_request_html($subtotal, $item, $order)
+{
+	if ($item && $item->get_meta('_talkorus_price_on_request') === 'yes') {
+		return talkorus_price_on_request('');
+	}
+
+	return $subtotal;
+}
+
+add_filter('manage_edit-product_columns', 'talkorus_add_product_attributes_admin_column', 30);
+
+function talkorus_add_product_attributes_admin_column($columns)
+{
+	$new_columns = array();
+	$inserted = false;
+
+	foreach ($columns as $column_key => $column_label) {
+		$new_columns[$column_key] = $column_label;
+
+		if ('sku' === $column_key) {
+			$new_columns['talkorus_product_attributes'] = 'Атрибуты';
+			$inserted = true;
+		}
+	}
+
+	if (!$inserted) {
+		$new_columns['talkorus_product_attributes'] = 'Атрибуты';
+	}
+
+	return $new_columns;
+}
+
+add_action('manage_product_posts_custom_column', 'talkorus_render_product_attributes_admin_column', 10, 2);
+
+function talkorus_render_product_attributes_admin_column($column, $post_id)
+{
+	if ('talkorus_product_attributes' !== $column || !function_exists('wc_get_product')) {
+		return;
+	}
+
+	$product = wc_get_product($post_id);
+
+	if (!$product) {
+		echo '&mdash;';
+		return;
+	}
+
+	$attributes = $product->get_attributes();
+
+	if (empty($attributes)) {
+		echo '&mdash;';
+		return;
+	}
+
+	$rows = array();
+
+	foreach ($attributes as $attribute) {
+		if (!is_a($attribute, 'WC_Product_Attribute')) {
+			continue;
+		}
+
+		$label = wc_attribute_label($attribute->get_name(), $product);
+		$values = array();
+
+		if ($attribute->is_taxonomy()) {
+			$terms = wc_get_product_terms($post_id, $attribute->get_name(), array(
+				'fields' => 'names',
+			));
+
+			if (!is_wp_error($terms)) {
+				$values = $terms;
+			}
+		} else {
+			$values = $attribute->get_options();
+		}
+
+		$values = array_filter(array_map('trim', array_map('wp_strip_all_tags', $values)));
+
+		if (empty($label) || empty($values)) {
+			continue;
+		}
+
+		$rows[] = '<li><strong>' . esc_html($label) . ':</strong> ' . esc_html(implode(', ', $values)) . '</li>';
+	}
+
+	if (empty($rows)) {
+		echo '&mdash;';
+		return;
+	}
+
+	echo '<ul class="talkorus-product-attributes-column">' . implode('', $rows) . '</ul>';
+}
+
+add_action('restrict_manage_posts', 'talkorus_render_product_attribute_admin_filter', 20, 2);
+
+function talkorus_render_product_attribute_admin_filter($post_type, $which = '')
+{
+	if ('product' !== $post_type || 'top' !== $which || !function_exists('wc_get_attribute_taxonomies')) {
+		return;
+	}
+
+	$attribute_taxonomies = wc_get_attribute_taxonomies();
+
+	if (empty($attribute_taxonomies)) {
+		return;
+	}
+
+	$current_value = isset($_GET['talkorus_product_attribute_filter'])
+		? sanitize_text_field(wp_unslash($_GET['talkorus_product_attribute_filter']))
+		: '';
+
+	$options = array();
+
+	foreach ($attribute_taxonomies as $attribute_taxonomy) {
+		if (empty($attribute_taxonomy->attribute_name)) {
+			continue;
+		}
+
+		$taxonomy = wc_attribute_taxonomy_name($attribute_taxonomy->attribute_name);
+
+		if (!taxonomy_exists($taxonomy)) {
+			continue;
+		}
+
+		$terms = get_terms(array(
+			'taxonomy'   => $taxonomy,
+			'hide_empty' => false,
+			'orderby'    => 'name',
+			'order'      => 'ASC',
+		));
+
+		if (empty($terms) || is_wp_error($terms)) {
+			continue;
+		}
+
+		$label = wc_attribute_label($taxonomy);
+		$options[$label] = array(
+			'taxonomy' => $taxonomy,
+			'terms'    => $terms,
+		);
+	}
+
+	if (empty($options)) {
+		return;
+	}
+
+	echo '<label class="screen-reader-text" for="talkorus-product-attribute-filter">Фильтр по атрибуту</label>';
+	echo '<select name="talkorus_product_attribute_filter" id="talkorus-product-attribute-filter">';
+	echo '<option value="">Все атрибуты</option>';
+
+	foreach ($options as $label => $data) {
+		echo '<optgroup label="' . esc_attr($label) . '">';
+
+		foreach ($data['terms'] as $term) {
+			$value = $data['taxonomy'] . '|' . $term->slug;
+			echo '<option value="' . esc_attr($value) . '"' . selected($current_value, $value, false) . '>';
+			echo esc_html($term->name);
+			echo '</option>';
+		}
+
+		echo '</optgroup>';
+	}
+
+	echo '</select>';
+}
+
+add_action('pre_get_posts', 'talkorus_filter_admin_products_by_attribute');
+
+function talkorus_filter_admin_products_by_attribute($query)
+{
+	if (!is_admin() || !$query->is_main_query()) {
+		return;
+	}
+
+	global $pagenow;
+
+	if ('edit.php' !== $pagenow || 'product' !== $query->get('post_type')) {
+		return;
+	}
+
+	if (empty($_GET['talkorus_product_attribute_filter'])) {
+		return;
+	}
+
+	$filter_value = sanitize_text_field(wp_unslash($_GET['talkorus_product_attribute_filter']));
+	$filter_parts = explode('|', $filter_value, 2);
+
+	if (count($filter_parts) !== 2) {
+		return;
+	}
+
+	$taxonomy = sanitize_key($filter_parts[0]);
+	$term_slug = sanitize_title($filter_parts[1]);
+
+	if (strpos($taxonomy, 'pa_') !== 0 || !taxonomy_exists($taxonomy) || !$term_slug) {
+		return;
+	}
+
+	$tax_query = $query->get('tax_query');
+
+	if (!is_array($tax_query)) {
+		$tax_query = array();
+	}
+
+	$tax_query[] = array(
+		'taxonomy' => $taxonomy,
+		'field'    => 'slug',
+		'terms'    => array($term_slug),
+	);
+
+	$query->set('tax_query', $tax_query);
+}
+
+add_action('admin_head-edit.php', 'talkorus_product_attributes_admin_column_styles');
+
+function talkorus_product_attributes_admin_column_styles()
+{
+	$screen = function_exists('get_current_screen') ? get_current_screen() : null;
+
+	if (!$screen || 'product' !== $screen->post_type) {
+		return;
+	}
+?>
+	<style>
+		.fixed .column-talkorus_product_attributes {
+			width: 22%;
+		}
+
+		.talkorus-product-attributes-column {
+			margin: 0;
+		}
+
+		.talkorus-product-attributes-column li {
+			margin: 0 0 4px;
+		}
+	</style>
+<?php
+}
+
 function talkorus_product_subcategories_dropdown($parent_slug)
 {
 	if (empty($parent_slug)) {
@@ -355,19 +768,29 @@ function talkorus_product_subcategories_dropdown($parent_slug)
 		return;
 	}
 
-	$subcategories = get_terms(array(
+	talkorus_product_subcategories_list($parent_term->term_id);
+}
+
+function talkorus_get_product_subcategories($parent_id)
+{
+	return get_terms(array(
 		'taxonomy'   => 'product_cat',
-		'parent'     => $parent_term->term_id,
+		'parent'     => $parent_id,
 		'hide_empty' => false,
 		'orderby'    => 'menu_order',
 		'order'      => 'ASC',
 	));
+}
+
+function talkorus_product_subcategories_list($parent_id, $depth = 1)
+{
+	$subcategories = talkorus_get_product_subcategories($parent_id);
 
 	if (empty($subcategories) || is_wp_error($subcategories)) {
-		return;
+		return false;
 	}
 
-	echo '<ul class="main-menu-subcategories">';
+	echo '<ul class="main-menu-subcategories main-menu-subcategories--level-' . esc_attr($depth) . '">';
 
 	foreach ($subcategories as $subcategory) {
 		$subcategory_link = get_term_link($subcategory);
@@ -376,14 +799,42 @@ function talkorus_product_subcategories_dropdown($parent_slug)
 			continue;
 		}
 
-		echo '<li class="main-menu-subcategories__item">';
+		$child_categories = talkorus_get_product_subcategories($subcategory->term_id);
+		$has_children = !empty($child_categories) && !is_wp_error($child_categories);
+		$item_classes = array('main-menu-subcategories__item');
+
+		if ($has_children) {
+			$item_classes[] = 'main-menu__item--has-dropdown';
+			$item_classes[] = 'main-menu-subcategories__item--has-children';
+		}
+
+		echo '<li class="' . esc_attr(implode(' ', $item_classes)) . '">';
 		echo '<a class="main-menu-subcategories__link" href="' . esc_url($subcategory_link) . '">';
 		echo esc_html($subcategory->name);
 		echo '</a>';
+
+		if ($has_children) {
+			talkorus_menu_dropdown_toggle();
+			echo '<div class="main-menu__dropdown main-menu__dropdown--nested">';
+			talkorus_product_subcategories_list($subcategory->term_id, $depth + 1);
+			echo '</div>';
+		}
+
 		echo '</li>';
 	}
 
 	echo '</ul>';
+
+	return true;
+}
+
+function talkorus_menu_dropdown_toggle()
+{
+	echo '<button class="main-menu__toggle" type="button" aria-expanded="false" aria-label="Показать подкатегории">';
+	echo '<svg width="14" height="8" viewBox="0 0 14 8" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">';
+	echo '<path d="M1 1L7 7L13 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+	echo '</svg>';
+	echo '</button>';
 }
 
 //корзина
@@ -630,8 +1081,8 @@ function talkorus_update_cart_item_variation()
 	wp_send_json_success(array(
 		'needs_reload'       => ! empty($existing_target_key),
 		'new_cart_item_key'  => $new_cart_item_key,
-		'price_html'         => WC()->cart->get_product_price($new_product),
-		'subtotal_html'      => WC()->cart->get_product_subtotal($new_product, $new_cart_item['quantity']),
+		'price_html'         => apply_filters('woocommerce_cart_item_price', WC()->cart->get_product_price($new_product), $new_cart_item, $new_cart_item_key),
+		'subtotal_html'      => apply_filters('woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal($new_product, $new_cart_item['quantity']), $new_cart_item, $new_cart_item_key),
 		'cart_total_html'    => WC()->cart->get_cart_total(),
 		'cart_count_text'    => $cart_count . ' ' . $count_word,
 		'remove_url'         => wc_get_cart_remove_url($new_cart_item_key),
@@ -664,6 +1115,38 @@ function talkorus_register_product_tabs_acf_fields()
 				'key' => 'field_talkorus_tab_description_content',
 				'label' => 'Описание — текст',
 				'name' => 'talkorus_tab_description_content',
+				'type' => 'wysiwyg',
+				'tabs' => 'all',
+				'toolbar' => 'full',
+				'media_upload' => 1,
+			),
+			array(
+				'key' => 'field_talkorus_tab_technical_heading',
+				'label' => 'Технические данные — заголовок',
+				'name' => 'talkorus_tab_technical_heading',
+				'type' => 'text',
+				'default_value' => '',
+			),
+			array(
+				'key' => 'field_talkorus_tab_technical_content',
+				'label' => 'Технические данные — текст',
+				'name' => 'talkorus_tab_technical_content',
+				'type' => 'wysiwyg',
+				'tabs' => 'all',
+				'toolbar' => 'full',
+				'media_upload' => 1,
+			),
+			array(
+				'key' => 'field_talkorus_tab_dimensions_heading',
+				'label' => 'Размеры и вес — заголовок',
+				'name' => 'talkorus_tab_dimensions_heading',
+				'type' => 'text',
+				'default_value' => '',
+			),
+			array(
+				'key' => 'field_talkorus_tab_dimensions_content',
+				'label' => 'Размеры и вес — текст',
+				'name' => 'talkorus_tab_dimensions_content',
 				'type' => 'wysiwyg',
 				'tabs' => 'all',
 				'toolbar' => 'full',
@@ -769,54 +1252,79 @@ function talkorus_product_acf_tabs($tabs)
 	unset($tabs['additional_information']);
 	unset($tabs['reviews']);
 
+	$description_heading = function_exists('get_field') ? get_field('talkorus_tab_description_heading', $product_id) : '';
 	$description_content = function_exists('get_field') ? get_field('talkorus_tab_description_content', $product_id) : '';
 	$product_description = $product->get_description();
+	$description_preview = wp_strip_all_tags((string) $description_heading . ' ' . (string) $description_content);
+	$description_is_technical = strpos($description_preview, 'Технические данные') !== false;
 
-	if (!empty($description_content) || !empty($product_description)) {
+	if ((!empty($description_content) && !$description_is_technical) || !empty($product_description)) {
 		$tabs['description'] = array(
-			'title'    => 'Описание',
-			'priority' => 10,
-			'callback' => 'talkorus_render_product_description_tab',
+			'title'                => 'Описание',
+			'priority'             => 10,
+			'callback'             => 'talkorus_render_product_description_tab',
+			'skip_acf_description' => $description_is_technical,
 		);
 	} else {
 		unset($tabs['description']);
 	}
 
+	$technical_field = 'talkorus_tab_technical_content';
+	$technical_heading_field = 'talkorus_tab_technical_heading';
+	$technical_content = function_exists('get_field') ? get_field($technical_field, $product_id) : '';
+
+	if (empty($technical_content) && $description_is_technical) {
+		$technical_field = 'talkorus_tab_description_content';
+		$technical_heading_field = 'talkorus_tab_description_heading';
+	}
+
 	$acf_tabs = array(
+		'talkorus_technical' => array(
+			'title'         => 'Технические данные',
+			'field'         => $technical_field,
+			'heading_field' => $technical_heading_field,
+			'priority'      => 20,
+		),
+		'talkorus_dimensions' => array(
+			'title'         => 'Размеры и вес',
+			'field'         => 'talkorus_tab_dimensions_content',
+			'heading_field' => 'talkorus_tab_dimensions_heading',
+			'priority'      => 30,
+		),
 		'talkorus_cut' => array(
 			'title'    => 'Печь в разрезе',
 			'field'    => 'talkorus_tab_cut_content',
-			'priority' => 20,
+			'priority' => 40,
 		),
 		'talkorus_scheme' => array(
 			'title'    => 'Схема работы печи',
 			'field'    => 'talkorus_tab_scheme_content',
-			'priority' => 30,
+			'priority' => 50,
 		),
 		'talkorus_purpose' => array(
 			'title'    => 'Назначения',
 			'field'    => 'talkorus_tab_purpose_content',
-			'priority' => 40,
+			'priority' => 60,
 		),
 		'talkorus_advantages' => array(
 			'title'    => 'Преимущества',
 			'field'    => 'talkorus_tab_advantages_content',
-			'priority' => 50,
+			'priority' => 70,
 		),
 		'talkorus_docs' => array(
 			'title'    => 'Документация',
 			'field'    => 'talkorus_tab_docs_content',
-			'priority' => 60,
+			'priority' => 80,
 		),
 		'talkorus_video' => array(
 			'title'    => 'Видео',
 			'field'    => 'talkorus_tab_video_content',
-			'priority' => 70,
+			'priority' => 90,
 		),
 		'talkorus_projects' => array(
 			'title'    => 'Для проектов',
 			'field'    => 'talkorus_tab_projects_content',
-			'priority' => 80,
+			'priority' => 100,
 		),
 	);
 
@@ -833,6 +1341,10 @@ function talkorus_product_acf_tabs($tabs)
 			'callback' => 'talkorus_render_product_acf_tab',
 			'field'    => $tab_data['field'],
 		);
+
+		if (!empty($tab_data['heading_field'])) {
+			$tabs[$tab_key]['heading_field'] = $tab_data['heading_field'];
+		}
 	}
 
 	return $tabs;
@@ -848,8 +1360,9 @@ function talkorus_render_product_description_tab($key, $tab)
 
 	$product_id = $product->get_id();
 
-	$heading = function_exists('get_field') ? get_field('talkorus_tab_description_heading', $product_id) : '';
-	$content = function_exists('get_field') ? get_field('talkorus_tab_description_content', $product_id) : '';
+	$skip_acf_description = !empty($tab['skip_acf_description']);
+	$heading = (!$skip_acf_description && function_exists('get_field')) ? get_field('talkorus_tab_description_heading', $product_id) : '';
+	$content = (!$skip_acf_description && function_exists('get_field')) ? get_field('talkorus_tab_description_content', $product_id) : '';
 
 	if (empty($heading)) {
 		$heading = get_the_title($product_id);
@@ -880,6 +1393,14 @@ function talkorus_render_product_acf_tab($key, $tab)
 
 	if (empty($content)) {
 		return;
+	}
+
+	if (!empty($tab['heading_field'])) {
+		$heading = function_exists('get_field') ? get_field($tab['heading_field'], $product->get_id()) : '';
+
+		if (!empty($heading)) {
+			echo '<h2>' . esc_html($heading) . '</h2>';
+		}
 	}
 
 	echo apply_filters('the_content', $content);
@@ -1158,6 +1679,21 @@ function talkorus_register_project_taxonomy()
 		),
 	));
 }
+
+add_action('pre_get_posts', 'talkorus_show_all_projects_on_archives');
+
+function talkorus_show_all_projects_on_archives($query)
+{
+	if (is_admin() || !$query->is_main_query()) {
+		return;
+	}
+
+	if ($query->is_post_type_archive('project') || $query->is_tax('project_cat')) {
+		$query->set('posts_per_page', -1);
+		$query->set('no_found_rows', true);
+	}
+}
+
 add_action('acf/init', 'talkorus_register_project_gallery_acf_fields');
 
 function talkorus_register_project_gallery_acf_fields()

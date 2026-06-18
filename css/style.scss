@@ -5,3 +5,23 @@
 body.hold {
   overflow: hidden;
 }
+.wp-block-paragraph {
+  margin: 10px 0px 20px 0px;
+}
+.wp-block-heading {
+  font-size: 20px;
+}
+.wp-block-list {
+  li {
+    list-style-type: disc;
+  }
+  display: block;
+  list-style-type: disc;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  padding-inline-start: 40px;
+  unicode-bidi: isolate;
+}
+.entry-header {
+  margin: 40px 0px 30px 0px;
+}

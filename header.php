@@ -15,10 +15,24 @@
 	<?php wp_head(); ?>
 </head>
 
-<body <?php body_class(); ?>>
+	<body <?php body_class(); ?>>
+
+		<div class="callback-modal" aria-hidden="true">
+			<div class="callback-modal__overlay" data-callback-modal-close></div>
+			<div class="callback-modal__content" role="dialog" aria-modal="true" aria-label="Заказать звонок">
+				<button class="callback-modal__close" type="button" aria-label="Закрыть окно" data-callback-modal-close>
+					<span></span>
+					<span></span>
+				</button>
+				<div class="callback-modal__logo">
+					<img src="<?php echo esc_url(get_template_directory_uri() . '/img/logo-dt.png'); ?>" alt="Talkorus" />
+				</div>
+				<?php echo do_shortcode('[contact-form-7 id="6fd28bb" title="Заказать звонок"]'); ?>
+			</div>
+		</div>
 
 
-	<!--begin header-->
+		<!--begin header-->
 	<div class="burger-menu no-desctop">
 		<nav class="mobile-menu">
 
@@ -342,14 +356,15 @@
 								</svg>
 							</div>
 							ДЛЯ ДОМА
-						</a>
+							</a>
+							<?php talkorus_menu_dropdown_toggle(); ?>
 
-						<div class="main-menu__dropdown">
-							<?php talkorus_product_subcategories_dropdown('dlya-doma'); ?>
-						</div>
-					</li>
-					<li>
-						<a href="<?php echo esc_url(get_term_link('dlya-bani', 'product_cat')); ?>">
+							<div class="main-menu__dropdown">
+								<?php talkorus_product_subcategories_dropdown('dlya-doma'); ?>
+							</div>
+						</li>
+						<li class="main-menu__item main-menu__item--has-dropdown">
+							<a href="<?php echo esc_url(get_term_link('dlya-bani', 'product_cat')); ?>">
 							<div class="ico">
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -382,15 +397,16 @@
 										d="M18.3535 17.5C18.3535 17.7583 18.5686 17.9677 18.834 17.9677C19.0994 17.9677 19.3145 17.7583 19.3145 17.5C19.3145 17.1303 19.4032 16.9693 19.526 16.7466C19.6711 16.4833 19.8517 16.1557 19.8517 15.5509C19.8517 14.9461 19.6711 14.6185 19.526 14.3553C19.4032 14.1325 19.3145 13.9716 19.3145 13.6019C19.3145 13.2325 19.4032 13.0717 19.526 12.8492C19.6711 12.5861 19.8517 12.2587 19.8517 11.6541C19.8517 11.3958 19.6366 11.1864 19.3712 11.1864C19.1059 11.1864 18.8907 11.3958 18.8907 11.6541C18.8907 12.0234 18.802 12.1842 18.6793 12.4068C18.5341 12.6699 18.3535 12.9973 18.3535 13.6019C18.3535 14.2067 18.5341 14.5342 18.6792 14.7975C18.802 15.0202 18.8907 15.1812 18.8907 15.5509C18.8907 15.9207 18.802 16.0816 18.6792 16.3044C18.5341 16.5676 18.3535 16.8952 18.3535 17.5Z"
 										fill="#A9613D" />
 								</svg>
+								</div>
+								ДЛЯ БАНИ
+							</a>
+							<?php talkorus_menu_dropdown_toggle(); ?>
+							<div class="main-menu__dropdown">
+								<?php talkorus_product_subcategories_dropdown('dlya-bani'); ?>
 							</div>
-							ДЛЯ БАНИ
-						</a>
-						<div class="main-menu__dropdown">
-							<?php talkorus_product_subcategories_dropdown('dlya-bani'); ?>
-						</div>
-					</li>
-					<li>
-						<a href="<?php echo esc_url(get_term_link('plitka-i-kamni', 'product_cat')); ?>">
+						</li>
+						<li class="main-menu__item main-menu__item--has-dropdown">
+							<a href="<?php echo esc_url(get_term_link('plitka-i-kamni', 'product_cat')); ?>">
 							<div class="ico">
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -433,12 +449,13 @@
 										</clipPath>
 									</defs>
 								</svg>
+								</div>
+								ПЛИТКА И КАМНИ
+							</a>
+							<?php talkorus_menu_dropdown_toggle(); ?>
+							<div class="main-menu__dropdown">
+								<?php talkorus_product_subcategories_dropdown('plitka-i-kamni'); ?>
 							</div>
-							ПЛИТКА И КАМНИ
-						</a>
-						<div class="main-menu__dropdown">
-							<?php talkorus_product_subcategories_dropdown('plitka-i-kamni'); ?>
-						</div>
 					</li>
 					<li>
 						<a href="<?php echo esc_url(home_url('/projects/')); ?>">
@@ -574,7 +591,7 @@
 					<a href="tel:8-800-201-14-19">8-800-201-14-19</a>
 				</div>
 				<div class="messgrs">
-					<a href="#">
+					<a href="https://t.me/Talkorus" target="_blank">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="56"
@@ -596,7 +613,7 @@
 							</defs>
 						</svg>
 					</a>
-					<a href="#">
+					<a href="https://max.ru/u/f9LHodD0cOKmq1A0bbbV8BdjhVZ2m6-GAmIIXFXP8yaKcKjgWt3TDQ5xfGI" target="_blank">
 						<img src="<?php echo get_template_directory_uri(); ?>/img/Max_logo_2025.png" alt="" />
 					</a>
 				</div>
@@ -1010,11 +1027,12 @@
 							</svg>
 
 							ДЛЯ ДОМА
-						</a>
+							</a>
+							<?php talkorus_menu_dropdown_toggle(); ?>
 
-						<div class="main-menu__dropdown">
-							<?php talkorus_product_subcategories_dropdown('dlya-doma'); ?>
-						</div>
+							<div class="main-menu__dropdown">
+								<?php talkorus_product_subcategories_dropdown('dlya-doma'); ?>
+							</div>
 					</li>
 
 					<li class="main-menu__item main-menu__item--has-dropdown">
@@ -1052,6 +1070,7 @@
 							</svg>
 							ДЛЯ БАНИ
 						</a>
+						<?php talkorus_menu_dropdown_toggle(); ?>
 
 						<div class="main-menu__dropdown">
 							<?php talkorus_product_subcategories_dropdown('dlya-bani'); ?>
@@ -1103,6 +1122,7 @@
 							</svg>
 							ПЛИТКА И КАМНИ
 						</a>
+						<?php talkorus_menu_dropdown_toggle(); ?>
 
 						<div class="main-menu__dropdown">
 							<?php talkorus_product_subcategories_dropdown('plitka-i-kamni'); ?>

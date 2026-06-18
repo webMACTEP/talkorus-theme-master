@@ -47,14 +47,6 @@ $current_term = get_queried_object();
                     <?php endwhile; ?>
                 </div>
 
-                <div class="projects-page__pagination">
-                    <?php
-                    the_posts_pagination(array(
-                        'prev_text' => 'Назад',
-                        'next_text' => 'Вперед',
-                    ));
-                    ?>
-                </div>
             </section>
         <?php else : ?>
             <p>В этой категории пока нет проектов.</p>

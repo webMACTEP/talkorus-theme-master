@@ -71,7 +71,7 @@ while (have_posts()) : the_post(); ?>
 						</div>
 					<?php endwhile; ?>
 					<div class="messgrs">
-						<a href="#">
+						<a href="https://t.me/Talkorus" target="_blank">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="56"
@@ -93,7 +93,7 @@ while (have_posts()) : the_post(); ?>
 								</defs>
 							</svg>
 						</a>
-						<a href="#">
+						<a href="https://max.ru/u/f9LHodD0cOKmq1A0bbbV8BdjhVZ2m6-GAmIIXFXP8yaKcKjgWt3TDQ5xfGI" target="_blank">
 							<img src="<?php echo get_template_directory_uri(); ?>/img/Max_logo_2025.png" alt="" />
 						</a>
 					</div>

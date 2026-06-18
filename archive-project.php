@@ -44,14 +44,6 @@ get_header();
                     <?php endwhile; ?>
                 </div>
 
-                <div class="projects-page__pagination">
-                    <?php
-                    the_posts_pagination(array(
-                        'prev_text' => 'Назад',
-                        'next_text' => 'Вперед',
-                    ));
-                    ?>
-                </div>
             </section>
         <?php else : ?>
             <p>Проекты пока не добавлены.</p>
