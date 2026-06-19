@@ -1470,6 +1470,16 @@
             line-height: normal;
         }
 
+        &__title-link {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.2s ease;
+
+            &:hover {
+                color: #a9613d;
+            }
+        }
+
         &__bottom {
             display: flex;
             align-items: center;
@@ -4331,16 +4341,23 @@
         table.variations {
             width: 100%;
             border-collapse: separate !important;
-            border-spacing: 0 22px !important;
-            margin: -22px 0 0 !important;
+            border-spacing: 0 !important;
+            margin: 0 !important;
         }
 
         table.variations tr {
-            margin: 0 !important;
+            display: block;
+            margin: 0 0 42px !important;
+        }
+
+        table.variations tr:last-child {
+            margin-bottom: 0 !important;
         }
 
         table.variations th,
         table.variations td {
+            display: block;
+            width: 100%;
             padding: 0 !important;
             vertical-align: top;
         }
@@ -4349,22 +4366,96 @@
             box-shadow: 0 0 0 2px #a9613d !important;
         }
         .variable-item.button-variable-item {
-            padding: 10px 30px !important;
+            width: 100% !important;
+            min-width: 0 !important;
+            height: 50px !important;
+            padding: 0 12px !important;
+            border-radius: 10px !important;
         }
         .variable-item:not(.radio-variable-item) {
             height: 50px !important;
             min-width: 50px;
         }
-        .variations th .woo-selected-variation-item-name {
-            color: #a9613d;
+        .variations .woo-selected-variation-item-name {
+            display: none !important;
         }
         .variations label {
+            display: block;
+            margin: 0 0 18px;
             color: #54595f;
             font-family: "PT Sans";
             font-size: 20px;
             font-style: normal;
             font-weight: 700;
             line-height: normal;
+        }
+        .variations .variable-items-wrapper {
+            width: 100% !important;
+            display: grid !important;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px 28px;
+        }
+        .variations .image-variable-items-wrapper .variable-item.image-variable-item {
+            width: 100% !important;
+            height: auto !important;
+            min-width: 0 !important;
+            display: flex !important;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 !important;
+            border: 0 !important;
+            box-shadow: none !important;
+            background: transparent !important;
+        }
+        .variations .image-variable-items-wrapper .variable-item-contents {
+            width: 100%;
+            display: block;
+        }
+        .variations .image-variable-items-wrapper .variable-item-image {
+            display: block;
+            width: 100% !important;
+            height: 96px !important;
+            box-sizing: border-box;
+            padding: 14px 38px;
+            border: 1px solid #dedede;
+            border-radius: 12px;
+            background: #fff;
+            object-fit: cover;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .variations .image-variable-items-wrapper .variable-item.image-variable-item.selected .variable-item-image {
+            border-color: #a9613d;
+            box-shadow: 0 0 0 1px #a9613d;
+        }
+        .variations .image-variable-items-wrapper .variable-item.image-variable-item::before,
+        .variations .image-variable-items-wrapper .variable-item.image-variable-item::after,
+        .variations .image-variable-items-wrapper .variable-item.image-variable-item .variable-item-contents::before,
+        .variations .image-variable-items-wrapper .variable-item.image-variable-item .variable-item-contents::after {
+            content: none !important;
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+        }
+        .variations .image-variable-items-wrapper .talkorus-variation-label {
+            display: block;
+            width: 100%;
+            margin: 12px 0 0;
+            color: #54595f;
+            font-family: "PT Sans";
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.25;
+            text-align: center;
+            white-space: normal;
+        }
+        .variations .button-variable-items-wrapper .variable-item.button-variable-item {
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            height: 50px !important;
+            font-size: 18px;
+            line-height: 1.2;
+            text-align: center;
         }
         &__title {
             margin: 0 0 20px;

@@ -59,7 +59,11 @@ if (empty($project_gallery) && has_post_thumbnail()) {
     </div>
 
     <div class="project-card__body">
-        <h3><?php the_title(); ?></h3>
+        <h3>
+            <a href="<?php the_permalink(); ?>" class="project-card__title-link">
+                <?php the_title(); ?>
+            </a>
+        </h3>
 
         <div class="project-card__bottom">
             <div class="project-card__date">

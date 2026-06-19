@@ -155,6 +155,50 @@ jQuery(document).ready(function ($) {
     e.stopPropagation();
   });
 
+  function talkorusPrepareVariationImageLabels($scope) {
+    const $root = $scope && $scope.length ? $scope : $(document);
+
+    $root
+      .find(".single-product-custom table.variations .image-variable-item")
+      .each(function () {
+        const $item = $(this);
+        const label =
+          $item.attr("data-title") ||
+          $item.attr("title") ||
+          $item.attr("aria-label") ||
+          $item.find("img").attr("alt") ||
+          $item.attr("data-value") ||
+          $.trim($item.text());
+
+        if (label) {
+          const cleanLabel = $.trim(label);
+          let $label = $item.children(".talkorus-variation-label");
+
+          if (!$label.length) {
+            $label = $("<span />", {
+              class: "talkorus-variation-label",
+            }).appendTo($item);
+          }
+
+          $item.attr("data-variation-label", cleanLabel);
+          $label.text(cleanLabel);
+        }
+      });
+  }
+
+  talkorusPrepareVariationImageLabels();
+
+  $(document).on(
+    "wc_variation_form woo_variation_swatches_loaded woocommerce_variation_has_changed",
+    function (event) {
+      talkorusPrepareVariationImageLabels($(event.target));
+    }
+  );
+
+  setTimeout(function () {
+    talkorusPrepareVariationImageLabels();
+  }, 500);
+
   function talkorusCloseMenuDropdowns($scope) {
     const $items = $scope
       ? $scope
