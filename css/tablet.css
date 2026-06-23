@@ -578,7 +578,7 @@
     width: 100%;
   }
   .hero-slider .heroSwiper {
-    padding: 50px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
     width: 100%;
     height: calc(75vh - 76px);
     position: relative;
@@ -1386,6 +1386,9 @@
     display: none;
   }
   .project-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     border-radius: 10px;
     border: 1px solid #e0e0e0;
     background: #fff;
@@ -1444,6 +1447,9 @@
     right: 18px;
   }
   .project-card__body {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
     padding: 0;
   }
   .project-card h3 {
@@ -1469,6 +1475,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 10px;
+    margin-top: auto;
   }
   .project-card__date svg {
     width: 18px;
@@ -1911,7 +1918,7 @@
     margin-bottom: 20px;
   }
   .catalog-breadcrumbs {
-    margin: 30px 0px;
+    margin: 0px 0px;
   }
   .catalog-breadcrumbs .woocommerce-breadcrumb {
     display: flex;
@@ -2673,10 +2680,21 @@
   /* =========================================================
   TABLET: catalog cards 3 columns / 333px height
    ========================================================= */
+  .catalog-content {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: 100%;
+  }
+  .catalog-content .catalog-head {
+    width: 100%;
+    box-sizing: border-box;
+  }
   .catalog-content ul.products {
     display: grid !important;
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
     grid-auto-rows: 333px !important;
+    width: 100%;
+    box-sizing: border-box;
     gap: 20px;
     align-items: start !important;
     overflow: visible !important;
@@ -2685,6 +2703,7 @@
     position: relative !important;
     z-index: 1;
     width: auto !important;
+    min-width: 0 !important;
     height: 333px !important;
     min-height: 333px !important;
     max-height: 333px !important;
@@ -2695,6 +2714,7 @@
     box-shadow: none !important;
     overflow: visible !important;
     display: block !important;
+    box-sizing: border-box;
   }
   .catalog-content ul.products li.product.catalog-card:hover {
     z-index: 100 !important;
@@ -2703,6 +2723,7 @@
     position: relative;
     z-index: 1;
     width: 100%;
+    max-width: 100%;
     height: 333px !important;
     min-height: 333px !important;
     display: flex;
@@ -2719,9 +2740,12 @@
     top: 0;
     left: 0;
     right: 0;
+    width: 100%;
+    max-width: 100%;
     height: auto !important;
     min-height: 333px !important;
     z-index: 100;
+    box-sizing: border-box;
     background: #fff !important;
     border-color: #d8d8d8 !important;
     box-shadow: 0 18px 30px rgba(0, 0, 0, 0.12) !important;
@@ -3356,6 +3380,11 @@
   }
   .woocommerce a.remove {
     color: #8e4c2b !important;
+  }
+  .single-project-page,
+  .projects-page,
+  .catalog-page {
+    margin: 40px 0px 0px 0px;
   }
   /* =========================================================
   CHECKOUT PAGE
@@ -5179,7 +5208,7 @@
     text-align: center;
   }
   .single-product-custom__title {
-    margin: 50px 0 20px;
+    margin: 40px 0 20px;
     color: #54595f;
     font-family: "PT Sans", sans-serif;
     font-size: 40px;
@@ -5506,6 +5535,38 @@
     margin: 0;
     -webkit-appearance: none;
   }
+  body.talkorus-hide-product-quantity .single-product-custom .single_variation_wrap,
+  body.talkorus-hide-product-quantity .single-product-custom form.cart:not(.variations_form), .single-product-custom.talkorus-hide-product-quantity .single_variation_wrap,
+  .single-product-custom.talkorus-hide-product-quantity form.cart:not(.variations_form), .single-product-custom:not(.product_cat-plitka-i-kamni):not(.product_cat-obliczovochnaya-plitka):not(.product_cat-kamni-dlya-bani) .single_variation_wrap,
+  .single-product-custom:not(.product_cat-plitka-i-kamni):not(.product_cat-obliczovochnaya-plitka):not(.product_cat-kamni-dlya-bani) form.cart:not(.variations_form) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "price price" "consult cart-button";
+  }
+  body.talkorus-hide-product-quantity .single-product-custom .quantity, .single-product-custom.talkorus-hide-product-quantity .quantity, .single-product-custom:not(.product_cat-plitka-i-kamni):not(.product_cat-obliczovochnaya-plitka):not(.product_cat-kamni-dlya-bani) .quantity {
+    position: absolute !important;
+    width: 1px !important;
+    min-width: 1px !important;
+    max-width: 1px !important;
+    height: 1px !important;
+    min-height: 1px !important;
+    max-height: 1px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    clip-path: inset(50%) !important;
+    white-space: nowrap !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  body.talkorus-hide-product-quantity .single-product-custom .quantity .qty, .single-product-custom.talkorus-hide-product-quantity .quantity .qty, .single-product-custom:not(.product_cat-plitka-i-kamni):not(.product_cat-obliczovochnaya-plitka):not(.product_cat-kamni-dlya-bani) .quantity .qty {
+    border: 0 !important;
+    font-size: 1px !important;
+  }
+  body.talkorus-hide-product-quantity .single-product-custom .single-product-qty-button, .single-product-custom.talkorus-hide-product-quantity .single-product-qty-button, .single-product-custom:not(.product_cat-plitka-i-kamni):not(.product_cat-obliczovochnaya-plitka):not(.product_cat-kamni-dlya-bani) .single-product-qty-button {
+    display: none !important;
+  }
   .single-product-custom {
     /* -------------------------
        Buttons
@@ -5705,6 +5766,14 @@
     color: #54595f;
     font-family: "PT Sans", sans-serif;
   }
+  .product-tabs__content h5 {
+    margin: 34px 0 18px;
+    color: #54595f;
+    font-family: "PT Sans", sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
   .product-tabs__panel {
     display: none;
   }
@@ -5718,6 +5787,7 @@
     font-size: 30px;
     font-weight: 700;
     line-height: 1.2;
+    text-align: left;
   }
   .product-tabs__panel h3 {
     margin: 34px 0 18px;
@@ -5981,7 +6051,7 @@
 /*проекты */
 @media (min-width: 744px) and (max-width: 1439px) {
   .projects-page {
-    padding-bottom: 70px;
+    padding-bottom: 0px;
   }
   .projects-page__title {
     margin: 30px 0 32px;
@@ -6237,6 +6307,18 @@
     line-height: 1;
     text-transform: uppercase;
   }
+  .projects-page__categories {
+    flex-wrap: nowrap;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    margin-bottom: 34px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-bottom: 36px;
+  }
   .projects-page__wrapp {
     display: flex;
     flex-wrap: nowrap;
@@ -6250,12 +6332,6 @@
     list-style: none;
     border: none;
   }
-  .projects-page__categories {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 36px;
-  }
   .projects-page__category {
     display: flex;
     align-items: center;
@@ -6268,6 +6344,7 @@
     font-family: "PT Sans", sans-serif;
     font-size: 16px;
     text-decoration: none;
+    text-wrap: nowrap;
   }
   .projects-page__category.active, .projects-page__category:hover {
     background: #a9613d;
@@ -6652,5 +6729,8 @@
     line-height: 1;
     text-align: center;
     transition: 0.2s ease;
+  }
+  .page {
+    padding: 21px 0px 0px 0px;
   }
 }/*# sourceMappingURL=tablet.css.map */

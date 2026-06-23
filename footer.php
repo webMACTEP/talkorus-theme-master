@@ -194,7 +194,7 @@ wp_footer(); ?>
 
                     ИНН: <span>100&#8203;123&#8203;2278</span>
                 </div>
-                <a href="#" class="politic">Политика конфиденциальности</a>
+                <a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>" class="politic">Политика конфиденциальности</a>
                 <div class="karelia">
                     <img src="<?php echo get_template_directory_uri(); ?>/img/mybusiness.png" alt="" />
                     Сайт создан при поддержке Центра<br />

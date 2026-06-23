@@ -625,7 +625,7 @@
         width: 100%;
 
         .heroSwiper {
-            padding-top: 52px;
+            padding-top: 0px;
             width: 100%;
             height: calc(55vh - 0px);
             //height: 840px;
@@ -1631,6 +1631,9 @@
         &:nth-child(8) {
             display: none;
         }
+        display: flex;
+        flex-direction: column;
+        height: 100%;
         border-radius: 20px;
         border: 1px solid #e0e0e0;
         background: #fff;
@@ -1698,6 +1701,9 @@
         }
 
         &__body {
+            display: flex;
+            flex: 1 1 auto;
+            flex-direction: column;
             padding: 0;
         }
 
@@ -1727,6 +1733,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 10px;
+            margin-top: auto;
         }
 
         &__date {
@@ -2279,7 +2286,7 @@
         margin-bottom: 20px;
     }
     .catalog-breadcrumbs {
-        margin: 30px 0px 0 0;
+        margin: 64px 0px 0 0;
 
         .woocommerce-breadcrumb {
             display: flex;
@@ -3255,10 +3262,21 @@
     ========================================================= */
 
     .catalog-content {
+        flex: 1 1 auto;
+        min-width: 0;
+        width: 100%;
+
+        .catalog-head {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
         ul.products {
             display: grid !important;
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             grid-auto-rows: 267px !important;
+            width: 100%;
+            box-sizing: border-box;
             gap: 12px !important;
             align-items: start !important;
             overflow: visible !important;
@@ -3269,6 +3287,7 @@
             z-index: 1;
 
             width: auto !important;
+            min-width: 0 !important;
             height: 267px !important;
             min-height: 267px !important;
             max-height: 267px !important;
@@ -3282,6 +3301,7 @@
 
             overflow: visible !important;
             display: block !important;
+            box-sizing: border-box;
         }
 
         ul.products li.product.catalog-card:hover {
@@ -3293,6 +3313,7 @@
             z-index: 1;
 
             width: 100%;
+            max-width: 100%;
             height: 267px !important;
             min-height: 267px !important;
 
@@ -3316,11 +3337,14 @@
             top: 0;
             left: 0;
             right: 0;
+            width: 100%;
+            max-width: 100%;
 
             height: auto !important;
             min-height: 267px !important;
 
             z-index: 100;
+            box-sizing: border-box;
             background: #fff !important;
             border-color: #d8d8d8 !important;
             box-shadow: 0 18px 30px rgba(0, 0, 0, 0.12) !important;
@@ -5284,8 +5308,12 @@
 }
 
 @media (max-width: 743px) {
+    .delivery-page,
+    .contacts-page{
+        padding: 54px 0px 0px 0px;
+    }
     .brand-page {
-        padding: 0px 0px 40px 0px;
+        padding: 54px 0px 0px 0px;
 
         .entry-header {
             margin: 20px 0px 0px 0px;
@@ -6304,7 +6332,9 @@
             border-radius: 8px;
             background: #fff;
             object-fit: cover;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
         }
         .variations .image-variable-items-wrapper .variable-item.image-variable-item.selected .variable-item-image {
             border-color: #a9613d;
@@ -6341,7 +6371,7 @@
             text-align: center;
         }
         &__title {
-            margin: 20px 0 20px;
+            margin: 74px 0 20px;
 
             color: #54595f;
             font-family: "PT Sans";
@@ -6754,6 +6784,45 @@
             }
         }
 
+        body.talkorus-hide-product-quantity &,
+        &.talkorus-hide-product-quantity,
+        &:not(.product_cat-plitka-i-kamni):not(.product_cat-obliczovochnaya-plitka):not(.product_cat-kamni-dlya-bani) {
+            .single_variation_wrap,
+            form.cart:not(.variations_form) {
+                grid-template-areas:
+                    "price price"
+                    "consult cart-button";
+            }
+
+            .quantity {
+                position: absolute !important;
+                width: 1px !important;
+                min-width: 1px !important;
+                max-width: 1px !important;
+                height: 1px !important;
+                min-height: 1px !important;
+                max-height: 1px !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                border: 0 !important;
+                overflow: hidden !important;
+                clip: rect(0 0 0 0) !important;
+                clip-path: inset(50%) !important;
+                white-space: nowrap !important;
+                opacity: 0 !important;
+                pointer-events: none !important;
+            }
+
+            .quantity .qty {
+                border: 0 !important;
+                font-size: 1px !important;
+            }
+
+            .single-product-qty-button {
+                display: none !important;
+            }
+        }
+
         /* -------------------------
        Buttons
     ------------------------- */
@@ -7022,6 +7091,7 @@
                 display: block;
             }
 
+            h5,
             h2 {
                 margin: 0 0 22px;
 
@@ -7379,7 +7449,7 @@
         }
     }
     .entry-header {
-        margin: 70px 0px 20px 0px;
+        margin: 30px 0px 20px 0px;
         h1 {
             font-size: 20px;
         }
@@ -7391,14 +7461,14 @@
     // проекты
 
     .projects-page {
-        padding-bottom: 70px;
+        padding-bottom: 0px;
 
         &__title {
             margin: 30px 0 32px;
 
             color: #54595f;
             font-family: "PT Sans", sans-serif;
-            font-size: 42px;
+            font-size: 24px;
             font-weight: 700;
             line-height: 1;
             text-transform: uppercase;
@@ -7723,7 +7793,7 @@
 
             color: #54595f;
             font-family: "PT Sans", sans-serif;
-            font-size: 42px;
+            font-size: 24px;
             font-weight: 700;
             line-height: 1;
             text-transform: uppercase;
@@ -8205,7 +8275,7 @@
                 display: flex;
                 align-items: center;
                 flex-wrap: nowrap;
-                gap: 8px;
+                gap: 4px;
             }
 
             margin: 0px 0px 28px 0px;

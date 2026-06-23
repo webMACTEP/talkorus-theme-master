@@ -918,7 +918,7 @@ function talkorus_checkout_fields($fields)
 	$fields['billing']['billing_address_1']['placeholder'] = 'Ваш адрес';
 	$fields['billing']['billing_address_1']['class'] = array('form-row-wide', 'checkout-field-address');
 	$fields['billing']['billing_address_1']['priority'] = 40;
-	$fields['billing']['billing_address_1']['required'] = true;
+	$fields['billing']['billing_address_1']['required'] = false;
 
 	if (isset($fields['order']['order_comments'])) {
 		$fields['order']['order_comments']['label'] = 'Комментарий к заказу';
@@ -928,6 +928,32 @@ function talkorus_checkout_fields($fields)
 
 	return $fields;
 }
+
+
+add_filter('woocommerce_checkout_fields', 'talkorus_remove_shipping_checkout_fields', 99);
+
+function talkorus_remove_shipping_checkout_fields($fields)
+{
+	if (isset($fields['shipping'])) {
+		unset($fields['shipping']['shipping_first_name']);
+		unset($fields['shipping']['shipping_last_name']);
+		unset($fields['shipping']['shipping_company']);
+		unset($fields['shipping']['shipping_country']);
+		unset($fields['shipping']['shipping_address_1']);
+		unset($fields['shipping']['shipping_address_2']);
+		unset($fields['shipping']['shipping_city']);
+		unset($fields['shipping']['shipping_state']);
+		unset($fields['shipping']['shipping_postcode']);
+		unset($fields['shipping']['shipping_phone']);
+	}
+
+	return $fields;
+}
+
+add_filter('woocommerce_ship_to_different_address_checked', '__return_false');
+
+add_filter('woocommerce_cart_needs_shipping_address', '__return_false');
+
 
 add_filter('woocommerce_order_button_text', 'talkorus_checkout_button_text');
 
@@ -1495,6 +1521,55 @@ function talkorus_simple_product_price_inside_form()
 	echo '</div>';
 }
 
+function talkorus_product_is_in_quantity_category($product_id = 0)
+{
+	$product_id = $product_id ? absint($product_id) : get_queried_object_id();
+
+	if (!$product_id) {
+		return false;
+	}
+
+	$quantity_category = get_term_by('slug', 'plitka-i-kamni', 'product_cat');
+
+	if (!$quantity_category || is_wp_error($quantity_category)) {
+		return false;
+	}
+
+	$category_ids = array(absint($quantity_category->term_id));
+	$children     = get_term_children($quantity_category->term_id, 'product_cat');
+
+	if (!is_wp_error($children) && !empty($children)) {
+		$category_ids = array_merge($category_ids, array_map('absint', $children));
+	}
+
+	return has_term($category_ids, 'product_cat', $product_id);
+}
+
+add_filter('body_class', 'talkorus_single_product_quantity_body_class');
+
+function talkorus_single_product_quantity_body_class($classes)
+{
+	if (!is_product()) {
+		return $classes;
+	}
+
+	global $product;
+
+	$product_id = $product instanceof WC_Product ? $product->get_id() : get_queried_object_id();
+
+	if ($product instanceof WC_Product && $product->is_type('variation')) {
+		$product_id = $product->get_parent_id();
+	}
+
+	if (talkorus_product_is_in_quantity_category($product_id)) {
+		$classes[] = 'talkorus-show-product-quantity';
+	} else {
+		$classes[] = 'talkorus-hide-product-quantity';
+	}
+
+	return $classes;
+}
+
 add_action('acf/init', 'talkorus_register_pages_settings_acf');
 
 function talkorus_register_pages_settings_acf()
@@ -1760,4 +1835,58 @@ function talkorus_register_project_gallery_acf_fields()
 		'description' => '',
 		'show_in_rest' => 0,
 	));
+}
+
+
+add_filter('woocommerce_checkout_fields', 'talkorus_checkout_make_address_not_required', 20);
+
+function talkorus_checkout_make_address_not_required($fields)
+{
+	if (isset($fields['billing']['billing_address_1'])) {
+		$fields['billing']['billing_address_1']['required'] = false;
+	}
+
+	if (isset($fields['shipping']['shipping_address_1'])) {
+		$fields['shipping']['shipping_address_1']['required'] = false;
+	}
+
+	return $fields;
+}
+
+add_action('woocommerce_checkout_create_order', 'talkorus_copy_billing_address_to_shipping_address', 20, 2);
+
+function talkorus_copy_billing_address_to_shipping_address($order, $data)
+{
+    $billing_first_name = $order->get_billing_first_name();
+    $billing_last_name  = $order->get_billing_last_name();
+    $billing_address_1  = $order->get_billing_address_1();
+
+    if (empty($billing_address_1)) {
+        return;
+    }
+
+    $order->set_shipping_first_name($billing_first_name);
+    $order->set_shipping_last_name($billing_last_name);
+
+    $order->set_shipping_address_1($billing_address_1);
+
+    if ($order->get_billing_country()) {
+        $order->set_shipping_country($order->get_billing_country());
+    } else {
+        $order->set_shipping_country('RU');
+    }
+
+    if ($order->get_billing_city()) {
+        $order->set_shipping_city($order->get_billing_city());
+    } else {
+        $order->set_shipping_city('Не указан');
+    }
+
+    if ($order->get_billing_state()) {
+        $order->set_shipping_state($order->get_billing_state());
+    }
+
+    if ($order->get_billing_postcode()) {
+        $order->set_shipping_postcode($order->get_billing_postcode());
+    }
 }

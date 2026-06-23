@@ -238,7 +238,7 @@
     gap: 10px;
   }
   header {
-    padding: 20px 0px 0px 0px;
+    padding: 20px 0px 30px 0px;
   }
   footer .menus {
     display: flex;
@@ -1202,6 +1202,9 @@
        object-fit: cover;
   }
   .project-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     border-radius: 20px;
     border: 1px solid #e0e0e0;
     background: #fff;
@@ -1256,6 +1259,9 @@
     right: 18px;
   }
   .project-card__body {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
     padding: 0;
   }
   .project-card h3 {
@@ -1281,6 +1287,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+    margin-top: auto;
   }
   .project-card__date {
     display: flex;
@@ -1732,7 +1739,7 @@
     margin-bottom: 20px;
   }
   .catalog-breadcrumbs {
-    margin: 30px 0px;
+    margin: 0px 0px;
   }
   .catalog-breadcrumbs .woocommerce-breadcrumb {
     display: flex;
@@ -2040,10 +2047,21 @@
      FINAL: catalog card hover overlay
      Вставить в самый конец SCSS
   ========================================================= */
+  .catalog-content {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: 100%;
+  }
+  .catalog-content .catalog-head {
+    width: 100%;
+    box-sizing: border-box;
+  }
   .catalog-content ul.products {
     display: grid !important;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     grid-auto-rows: 450px;
+    width: 100%;
+    box-sizing: border-box;
     gap: 20px;
     align-items: start !important;
     overflow: visible !important;
@@ -2052,6 +2070,7 @@
     position: relative !important;
     z-index: 1;
     width: auto !important;
+    min-width: 0 !important;
     height: 450px !important;
     min-height: 450px !important;
     max-height: 450px !important;
@@ -2062,6 +2081,7 @@
     box-shadow: none !important;
     overflow: visible !important;
     display: block !important;
+    box-sizing: border-box;
   }
   .catalog-content ul.products li.product.catalog-card:hover {
     z-index: 100 !important;
@@ -2075,6 +2095,7 @@
     position: relative;
     z-index: 1;
     width: 100%;
+    max-width: 100%;
     height: 450px;
     min-height: 450px;
     display: flex;
@@ -2094,9 +2115,12 @@
     top: 0;
     left: 0;
     right: 0;
+    width: 100%;
+    max-width: 100%;
     height: auto;
     min-height: 450px;
     z-index: 100;
+    box-sizing: border-box;
     box-shadow: 0 18px 30px rgba(0, 0, 0, 0.12);
   }
   .catalog-card__link {
@@ -2708,7 +2732,7 @@
   }
   .cart-page h1 {
     color: #54595f;
-    margin: 0px 0px 20px 0px;
+    margin: 30px 0px 30px 0px;
   }
   .cart-page {
     padding-bottom: 60px;
@@ -3655,7 +3679,7 @@
     text-align: center;
   }
   .single-product-custom__title {
-    margin: 0 0 20px;
+    margin: 30px 0 20px;
     color: #54595f;
     font-family: "PT Sans", sans-serif;
     font-size: 40px;
@@ -3981,6 +4005,38 @@
   .single-product-custom .quantity .qty::-webkit-outer-spin-button, .single-product-custom .quantity .qty::-webkit-inner-spin-button {
     margin: 0;
     -webkit-appearance: none;
+  }
+  body.talkorus-hide-product-quantity .single-product-custom .single_variation_wrap,
+  body.talkorus-hide-product-quantity .single-product-custom form.cart:not(.variations_form), .single-product-custom.talkorus-hide-product-quantity .single_variation_wrap,
+  .single-product-custom.talkorus-hide-product-quantity form.cart:not(.variations_form), .single-product-custom:not(.product_cat-plitka-i-kamni):not(.product_cat-obliczovochnaya-plitka):not(.product_cat-kamni-dlya-bani) .single_variation_wrap,
+  .single-product-custom:not(.product_cat-plitka-i-kamni):not(.product_cat-obliczovochnaya-plitka):not(.product_cat-kamni-dlya-bani) form.cart:not(.variations_form) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "price price" "consult cart-button";
+  }
+  body.talkorus-hide-product-quantity .single-product-custom .quantity, .single-product-custom.talkorus-hide-product-quantity .quantity, .single-product-custom:not(.product_cat-plitka-i-kamni):not(.product_cat-obliczovochnaya-plitka):not(.product_cat-kamni-dlya-bani) .quantity {
+    position: absolute !important;
+    width: 1px !important;
+    min-width: 1px !important;
+    max-width: 1px !important;
+    height: 1px !important;
+    min-height: 1px !important;
+    max-height: 1px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    clip-path: inset(50%) !important;
+    white-space: nowrap !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  body.talkorus-hide-product-quantity .single-product-custom .quantity .qty, .single-product-custom.talkorus-hide-product-quantity .quantity .qty, .single-product-custom:not(.product_cat-plitka-i-kamni):not(.product_cat-obliczovochnaya-plitka):not(.product_cat-kamni-dlya-bani) .quantity .qty {
+    border: 0 !important;
+    font-size: 1px !important;
+  }
+  body.talkorus-hide-product-quantity .single-product-custom .single-product-qty-button, .single-product-custom.talkorus-hide-product-quantity .single-product-qty-button, .single-product-custom:not(.product_cat-plitka-i-kamni):not(.product_cat-obliczovochnaya-plitka):not(.product_cat-kamni-dlya-bani) .single-product-qty-button {
+    display: none !important;
   }
   .single-product-custom {
     /* -------------------------
@@ -4376,7 +4432,7 @@
     background: #ffbc3b;
   }
   .projects-page {
-    padding-bottom: 70px;
+    padding-bottom: 0px;
   }
   .projects-page__title {
     margin: 30px 0 32px;
@@ -4752,9 +4808,11 @@
   }
   .contacts-page h1 {
     color: #54595f;
+    padding: 30px 0px 30px 0px;
   }
   .delivery-page h1 {
     color: #54595f;
+    padding: 30px 0px 30px 0px;
   }
   .delivery-page .delivery-steps {
     display: grid;
@@ -5288,12 +5346,13 @@
     padding: 0px 0px 70px 0px;
   }
   .brand-page .entry-header {
-    margin: 34px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
   }
   .brand-page h1 {
     color: #54595f;
     font-size: 36px;
     line-height: 1.15;
+    padding: 30px 0px 30px 0px;
   }
   .brand-page h1 span {
     color: #a9613d;
@@ -5840,5 +5899,8 @@
   }
   .talkorus-cf7-form__button:hover {
     background: #a15836;
+  }
+  .hero-slider {
+    margin-top: -30px;
   }
 }/*# sourceMappingURL=desktop.css.map */

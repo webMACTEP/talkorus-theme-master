@@ -14,9 +14,15 @@ if (post_password_required()) {
 	echo get_the_password_form();
 	return;
 }
+
+$quantity_visibility_class = 'talkorus-hide-product-quantity';
+
+if (function_exists('talkorus_product_is_in_quantity_category') && talkorus_product_is_in_quantity_category($product->get_id())) {
+	$quantity_visibility_class = 'talkorus-show-product-quantity';
+}
 ?>
 
-<div id="product-<?php the_ID(); ?>" <?php wc_product_class('single-product-custom', $product); ?>>
+<div id="product-<?php the_ID(); ?>" <?php wc_product_class(array('single-product-custom', $quantity_visibility_class), $product); ?>>
 
 	<h1 class="single-product-custom__title">
 		<?php the_title(); ?>
